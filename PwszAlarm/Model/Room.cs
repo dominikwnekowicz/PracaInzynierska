@@ -1,6 +1,6 @@
 ﻿using Newtonsoft.Json;
 
-namespace PwszAlarm.PwszAlarmDB
+namespace PwszAlarm.Model
 {
     public class Room
     {
@@ -11,6 +11,6 @@ namespace PwszAlarm.PwszAlarmDB
         public string Name { get; set; }
 
         [JsonProperty (PropertyName = "floor")]
-        public int Floor { get; set; }
+        public string Floor { get; set; }
     }
 }

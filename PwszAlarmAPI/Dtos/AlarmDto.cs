@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.ComponentModel.DataAnnotations;
 
-namespace PwszAlarmAPI.Models
+namespace PwszAlarmAPI.Dtos
 {
-    public class Alarm
+    public class AlarmDto
     {
         public int Id { get; set; }
         public int RoomId { get; set; }

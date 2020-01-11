@@ -6,10 +6,16 @@ using Android.Widget;
 using Android.Text.Format;
 using Android.Content;
 using Android.Preferences;
+using Android.Content.PM;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
+using PwszAlarm.PwszAlarmDB;
+using System;
 
 namespace PwszAlarm
 {
     [Activity(Label = "@string/app_name", Theme = "@style/AppTheme", MainLauncher = true)]
+
     public class MainActivity : AppCompatActivity
     {
         protected override void OnCreate(Bundle savedInstanceState)
@@ -24,19 +30,37 @@ namespace PwszAlarm
                 var intent = new Intent(this, typeof(FirstRunActivity));
                 StartActivityForResult(intent, 1);
             }
-            SetContentView(Resource.Layout.activity_main);
-            var height = Resources.DisplayMetrics.HeightPixels / 9;
-            var width = Resources.DisplayMetrics.WidthPixels;
-            //LinearLayout leftLayout = FindViewById<LinearLayout>(Resource.Id.leftLinearLayout);
-            SetButtonsSize(height*2, width);
-            
+            else
+            {
+                SetContentView(Resource.Layout.activity_main);
+                var height = Resources.DisplayMetrics.HeightPixels / 9;
+                var width = Resources.DisplayMetrics.WidthPixels;
+                //LinearLayout leftLayout = FindViewById<LinearLayout>(Resource.Id.leftLinearLayout);
+                SetButtonsSize(height * 2, width);
+                Button planButton = FindViewById<Button>(Resource.Id.planButton);
+                planButton.Click += (o, e) =>
+                {
+                    var intent = new Intent(this, typeof(BuildingPlansActivity));
+                    StartActivity(intent);
+                };
+                Button reportButton = FindViewById<Button>(Resource.Id.reportButton);
+                reportButton.Click += (o, e) =>
+                {
+                    var intent = new Intent(this, typeof(ReportEmergencyActivity));
+                    StartActivity(intent);
+                };
+                SQLiteDb.LoadRoomsToDB(this);
+            }
+
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
-            Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            //Xamarin.Essentials.Platform.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 
             base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+
 
         private void SetButtonsSize(int height, int width)
         {

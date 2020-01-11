@@ -5,6 +5,11 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PwszAlarmAPI", "PwszAlarmAPI.csproj", "{47119D50-85F8-4BE1-ABA2-886690070E28}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{5D93A260-DD97-4584-94D0-50B84B6AB392}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\grant.sql = ..\..\..\grant.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
