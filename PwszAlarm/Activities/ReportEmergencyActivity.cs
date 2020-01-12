@@ -89,6 +89,7 @@ namespace PwszAlarm
                 extras.PutString("choosenRoom", choosenRoom);
                 intent.PutExtras(extras);
                 StartActivity(intent);
+                Finish();
             }
         }
     }

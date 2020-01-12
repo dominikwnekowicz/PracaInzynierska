@@ -143,5 +143,10 @@ namespace PwszAlarm.PwszAlarmDB
             });
             alert.Show();
         }
+        public static Room FindRoom(string roomName)
+        {
+            Room room = roomsList.FirstOrDefault(x => x.Name == roomName);
+            return room;
+        }
     }
 }
