@@ -11,7 +11,7 @@ using Android.Widget;
 using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
 
-namespace PwszAlarm
+namespace PwszAlarm.Activities
 {
     [Activity(Label = "BuildingPlansActivity")]
     public class BuildingPlansActivity : Activity

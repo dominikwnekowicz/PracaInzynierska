@@ -60,14 +60,19 @@
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Activities\AlarmsHistoryActivity.cs" />
+    <Compile Include="Activities\AlarmsHistoryAdapter.cs" />
+    <Compile Include="Activities\LoadDataActivity.cs" />
+    <Compile Include="Activities\MainPageActivity.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Model\Alarm.cs" />
     <Compile Include="Activities\BuildingPlansActivity.cs" />
-    <Compile Include="Activities\FirstRunActivity.cs" />
+    <Compile Include="Activities\SignInActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="Activities\ReportEmergencyActivity.cs" />
     <Compile Include="Model\ShortAlarm.cs" />
+    <Compile Include="PwszAlarmDB\Permissions.cs" />
     <Compile Include="PwszAlarmDB\SQLiteDb.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -143,11 +148,6 @@
     <AndroidResource Include="Resources\drawable\phoneBlack.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\activity_main.xml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\history.png" />
   </ItemGroup>
   <ItemGroup>
@@ -160,7 +160,7 @@
     <AndroidResource Include="Resources\drawable\triangleyellow.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\FirstRun.xml">
+    <AndroidResource Include="Resources\layout\SignIn.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -169,7 +169,11 @@
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\MainPage.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\BuildingPlans.xml" />
   </ItemGroup>
@@ -178,6 +182,16 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WriteReportData.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\LoadingView.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\AlarmsHistory.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

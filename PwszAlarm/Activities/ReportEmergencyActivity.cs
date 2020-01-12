@@ -13,7 +13,7 @@ using Android.Widget;
 using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
 
-namespace PwszAlarm
+namespace PwszAlarm.Activities
 {
     [Activity(Label = "ReportEmergencyActivity")]
     public class ReportEmergencyActivity : Activity

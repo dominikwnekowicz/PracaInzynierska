@@ -203,6 +203,10 @@
     <Compile Include="Migrations\202001111228333_AddRoomsData.Designer.cs">
       <DependentUpon>202001111228333_AddRoomsData.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001121515469_AlarmsTableClear.cs" />
+    <Compile Include="Migrations\202001121515469_AlarmsTableClear.Designer.cs">
+      <DependentUpon>202001121515469_AlarmsTableClear.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Alarm.cs" />
@@ -214,9 +218,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-PwszAlarmAPI-20191214021331.mdf" />
-    <Content Include="App_Data\aspnet-PwszAlarmAPI-20191214021331_log.ldf">
-      <DependentUpon>aspnet-PwszAlarmAPI-20191214021331.mdf</DependentUpon>
-    </Content>
+    <Content Include="App_Data\aspnet-PwszAlarmAPI-20191214021331_log.ldf" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
@@ -297,6 +299,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001111228333_AddRoomsData.resx">
       <DependentUpon>202001111228333_AddRoomsData.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001121515469_AlarmsTableClear.resx">
+      <DependentUpon>202001121515469_AlarmsTableClear.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -42,22 +42,9 @@ namespace PwszAlarm.PwszAlarmDB
                 return false;
             }
         }
-
-        private static async void CheckPermissions(Activity activity)
-        {
-            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
-            if (status != PermissionStatus.Granted)
-            {
-                if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Storage))
-                {
-                    ShowAlert(activity, "Uprawnienia", "Potrzebujemy uprawnień do dostępu do pamięci.");
-                }
-                var results = CrossPermissions.Current.RequestPermissionsAsync(Permission.Storage);
-            }
-        }
         public static async void LoadAlarmsToDb(Activity activity)
         {
-            CheckPermissions(activity);
+            Permissions.CheckPermissions(activity);
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
             if (status == PermissionStatus.Granted)
             {
@@ -90,7 +77,7 @@ namespace PwszAlarm.PwszAlarmDB
         }
         public static async void LoadRoomsToDB(Activity activity)
         {
-            CheckPermissions(activity);
+            Permissions.CheckPermissions(activity);
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
             if(status == PermissionStatus.Granted)
             {
@@ -147,6 +134,11 @@ namespace PwszAlarm.PwszAlarmDB
         {
             Room room = roomsList.FirstOrDefault(x => x.Name == roomName);
             return room;
+        }
+        public static bool IsDataLoaded()
+        {
+            if (roomsList.Any()) return true;
+            else return false;
         }
     }
 }

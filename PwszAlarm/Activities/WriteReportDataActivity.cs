@@ -13,20 +13,20 @@ using Android.Widget;
 using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
 
-namespace PwszAlarm
+namespace PwszAlarm.Activities
 {
     [Activity(Label = "WriteReportDataActivity")]
     public class WriteReportDataActivity : Activity
     {
         TextView roomTextView;
         TextView floorTextView;
-        EditText notesEditText;
+        EditText nameEditText;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.WriteReportData);
             Button okButton = FindViewById<Button>(Resource.Id.acceptButton);
-            notesEditText = FindViewById<EditText>(Resource.Id.notesEditText);
+            nameEditText = FindViewById<EditText>(Resource.Id.nameEditText);
             roomTextView = FindViewById<TextView>(Resource.Id.roomTextView);
             floorTextView = FindViewById<TextView>(Resource.Id.floorTextView);
 
@@ -39,13 +39,13 @@ namespace PwszAlarm
         private void OkButton_Click(object sender, EventArgs e)
         {
             InputMethodManager imm = (InputMethodManager)GetSystemService(InputMethodService);
-            imm.HideSoftInputFromWindow(notesEditText.WindowToken, 0);
+            imm.HideSoftInputFromWindow(nameEditText.WindowToken, 0);
             ShortAlarm shortAlarm = new ShortAlarm();
             Room room = SQLiteDb.FindRoom(roomTextView.Text);
             string now = DateTime.Now.ToString("s");
-            shortAlarm.Accepted = false;
+            shortAlarm.Archived = false;
             shortAlarm.RoomId = room.Id;
-            shortAlarm.Notes = notesEditText.Text;
+            shortAlarm.Name = nameEditText.Text;
             shortAlarm.UserEmail = "dominik.wnekowicz@gmail.com";
             shortAlarm.NotifyDate = Convert.ToDateTime(now);
             _ = WebApiDataController.PostAlarm(this, shortAlarm);

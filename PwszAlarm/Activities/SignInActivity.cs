@@ -11,17 +11,17 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace PwszAlarm
+namespace PwszAlarm.Activities
 {
-    [Activity(Label = "FirstRunActivity")]
-    public class FirstRunActivity : Activity
+    [Activity(Label = "SignInActivity")]
+    public class SignInActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            SetContentView(Resource.Layout.FirstRun);
+            SetContentView(Resource.Layout.SignIn);
 
             var registered = Intent.GetBooleanExtra("registered", false);
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
@@ -46,6 +46,8 @@ namespace PwszAlarm
             ISharedPreferencesEditor editor = prefs.Edit();
             editor.PutBoolean("signedin", true);
             editor.Apply();
+            var intent = new Intent(this, typeof(LoadDataActivity));
+            StartActivity(intent);
             Finish();
         }
 

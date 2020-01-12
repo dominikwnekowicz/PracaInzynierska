@@ -12,7 +12,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace PwszAlarm
+namespace PwszAlarm.Activities
 {
     [Activity(Label = "RegisterActivity")]
     public class RegisterActivity : Activity
@@ -135,7 +135,7 @@ namespace PwszAlarm
             extras.PutString("email", emailEditText.Text);
             extras.PutBoolean("registered", true);
             FinishActivity(1);
-            Intent intent = new Intent(this, typeof(FirstRunActivity));
+            Intent intent = new Intent(this, typeof(SignInActivity));
             intent.PutExtras(extras);
             StartActivity(intent);
         }
