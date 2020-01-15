@@ -13,6 +13,7 @@ namespace PwszAlarmAPI
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        [Obsolete]
         protected void Application_Start()
         {
             Mapper.Initialize(c => c.AddProfile<MappingProfile>());

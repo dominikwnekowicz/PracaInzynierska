@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Web.Http;
 using AutoMapper;
 using PwszAlarmAPI.Dtos;
+using PwszAlarmAPI.Infrastructure;
 using PwszAlarmAPI.Models;
 
 namespace PwszAlarmAPI.Controllers.Api

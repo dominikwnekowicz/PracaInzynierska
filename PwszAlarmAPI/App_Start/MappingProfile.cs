@@ -12,10 +12,10 @@ namespace PwszAlarmAPI.App_Start
     {
         public MappingProfile()
         {
-            Mapper.CreateMap<Alarm, AlarmDto>();
-            Mapper.CreateMap<AlarmDto, Alarm>();
-            Mapper.CreateMap<Room, RoomDto>();
-            Mapper.CreateMap<RoomDto, Room>();
+            CreateMap<Alarm, AlarmDto>();
+            CreateMap<AlarmDto, Alarm>();
+            CreateMap<Room, RoomDto>();
+            CreateMap<RoomDto, Room>();
         }
     }
 }

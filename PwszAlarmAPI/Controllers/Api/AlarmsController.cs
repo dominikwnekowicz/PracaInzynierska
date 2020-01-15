@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using PwszAlarmAPI.Dtos;
+using PwszAlarmAPI.Infrastructure;
 using PwszAlarmAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,16 @@ namespace PwszAlarmAPI.Controllers.Api
         [HttpGet]
         public IHttpActionResult GetAlarms()
         {
+            var alarms = _context.Alarms.ToList().Select(Mapper.Map<Alarm, AlarmDto>);
+            foreach(var alarmDto in alarms )
+            {
+                if(DateTime.Now.Subtract(alarmDto.NotifyDate).TotalDays >= 30)
+                {
+                    _context.Alarms.FirstOrDefault(a => a.Id == alarmDto.Id).Archived = true;
+                }
+            }
+            _context.SaveChanges();
+
             return Ok(_context.Alarms.ToList().Select(Mapper.Map<Alarm, AlarmDto>));
         }
 

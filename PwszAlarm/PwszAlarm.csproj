@@ -65,13 +65,13 @@
     <Compile Include="Activities\LoadDataActivity.cs" />
     <Compile Include="Activities\MainPageActivity.cs" />
     <Compile Include="MainApplication.cs" />
+    <Compile Include="Model\AccountModels.cs" />
     <Compile Include="Model\Alarm.cs" />
     <Compile Include="Activities\BuildingPlansActivity.cs" />
     <Compile Include="Activities\SignInActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="Activities\ReportEmergencyActivity.cs" />
-    <Compile Include="Model\ShortAlarm.cs" />
     <Compile Include="PwszAlarmDB\Permissions.cs" />
     <Compile Include="PwszAlarmDB\SQLiteDb.cs" />
     <Compile Include="Resources\Resource.designer.cs" />

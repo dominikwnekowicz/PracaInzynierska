@@ -19,7 +19,7 @@ namespace PwszAlarm.Activities
     {
         private bool dataValid = false;
         private Button registerButton, registerBackButton;
-        private EditText emailEditText, nickEditText, passwordEditText, confirmEditText, phoneEditText;
+        private EditText emailEditText, passwordEditText, confirmEditText;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -28,34 +28,16 @@ namespace PwszAlarm.Activities
             registerButton = FindViewById<Button>(Resource.Id.registerAccountButton);
             registerBackButton = FindViewById<Button>(Resource.Id.registerBackButton);
             emailEditText = FindViewById<EditText>(Resource.Id.registerEmailEditText);
-            nickEditText = FindViewById<EditText>(Resource.Id.nickEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.registerPasswordEditText);
             confirmEditText = FindViewById<EditText>(Resource.Id.confirmEditText);
-            phoneEditText = FindViewById<EditText>(Resource.Id.phoneEditText);
             string email = Intent.GetStringExtra("email");
             emailEditText.Text = email;
             registerButton.Click += RegisterButton_Click;
             registerBackButton.Click += RegisterBackButton_Click;
 
             emailEditText.TextChanged += EmailEditText_TextChanged;
-            nickEditText.TextChanged += NickEditText_TextChanged;
             passwordEditText.TextChanged += PasswordEditText_TextChanged;
             confirmEditText.TextChanged += ConfirmEditText_TextChanged;
-            phoneEditText.TextChanged += PhoneEditText_TextChanged;
-        }
-
-        private void PhoneEditText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            var phone = e.Text.ToString();
-            if (phone.Length < 9 || phone.Length > 9)
-            {
-                phoneEditText.Error = "Podaj prawidłowy numer telefonu";
-                dataValid = false;
-            }
-            else
-            {
-                dataValid = true;
-            }
         }
 
         private void ConfirmEditText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
@@ -79,20 +61,6 @@ namespace PwszAlarm.Activities
             if(password.Length < 8)
             {
                 passwordEditText.Error = "Hasło musi mieć min. 8 znaków";
-                dataValid = false;
-            }
-            else
-            {
-                dataValid = true;
-            }
-        }
-
-        private void NickEditText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
-        {
-            var nick = e.Text.ToString();
-            if(nick == "")
-            {
-                nickEditText.Error = "To pole jest wymagane";
                 dataValid = false;
             }
             else

@@ -23,4 +23,21 @@ namespace PwszAlarm.Model
         [JsonProperty(PropertyName = "archived")]
         public bool Archived { get; set; }
     }
+    public class ShortAlarm
+    {
+        [JsonProperty(PropertyName = "roomId")]
+        public int RoomId { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "userEmail")]
+        public string UserEmail { get; set; }
+
+        [JsonProperty(PropertyName = "notifyDate")]
+        public DateTime NotifyDate { get; set; }
+
+        [JsonProperty(PropertyName = "archived")]
+        public bool Archived { get; set; }
+    }
 }

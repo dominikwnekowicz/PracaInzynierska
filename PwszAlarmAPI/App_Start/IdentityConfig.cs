@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
@@ -10,16 +11,36 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
+using PwszAlarmAPI.Infrastructure;
 using PwszAlarmAPI.Models;
+using SendGrid;
+using SendGrid.Helpers.Mail;
 
 namespace PwszAlarmAPI
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            // Dołącz tutaj usługę poczty e-mail, aby wysłać wiadomość e-mail.
-            return Task.FromResult(0);
+            await configSendGridasync(message);
+        }
+
+        private async Task configSendGridasync(IdentityMessage message)
+        {
+            Environment.SetEnvironmentVariable("apiKey", "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");
+            var apiKey = Environment.GetEnvironmentVariable("apiKey");
+            var client = new SendGridClient(apiKey);
+            var from = new EmailAddress("noreply@pwszalarm.net", "PWSZ Alarm");
+            var subject = message.Subject;
+            var to = new EmailAddress(message.Destination, message.Destination.Split('@').ElementAt(1));
+            var plainTextContent = message.Body;
+            var htmlContent = message.Body;
+            var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);
+            var response = await client.SendEmailAsync(msg);
+            if (response.StatusCode != HttpStatusCode.OK)
+            {
+                await Task.FromResult(0);
+            }
         }
     }
 
@@ -95,12 +116,6 @@ namespace PwszAlarmAPI
             : base(userManager, authenticationManager)
         {
         }
-
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(ApplicationUser user)
-        {
-            return user.GenerateUserIdentityAsync((ApplicationUserManager)UserManager);
-        }
-
         public static ApplicationSignInManager Create(IdentityFactoryOptions<ApplicationSignInManager> options, IOwinContext context)
         {
             return new ApplicationSignInManager(context.GetUserManager<ApplicationUserManager>(), context.Authentication);
