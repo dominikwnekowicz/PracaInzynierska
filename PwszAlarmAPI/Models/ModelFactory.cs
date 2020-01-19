@@ -25,13 +25,11 @@ namespace PwszAlarmAPI.Models
             {
                 Url = _UrlHelper.Link("GetUserById", new { id = appUser.Id }),
                 Id = appUser.Id,
-                UserName = appUser.Email.Split('@').ElementAt(0),
+                UserName = appUser.UserName,
                 FullName = string.Format("{0} {1}", appUser.FirstName, appUser.LastName),
                 Email = appUser.Email,
                 EmailConfirmed = appUser.EmailConfirmed,
                 JoinDate = appUser.JoinDate,
-                Roles = _AppUserManager.GetRolesAsync(appUser.Id).Result,
-                Claims = _AppUserManager.GetClaimsAsync(appUser.Id).Result
             };
         }
     }

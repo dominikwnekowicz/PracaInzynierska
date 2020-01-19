@@ -14,8 +14,8 @@ namespace PwszAlarm.Model
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "userEmail")]
-        public string UserEmail { get; set; }
+        [JsonProperty(PropertyName = "userId")]
+        public string UserId { get; set; }
 
         [JsonProperty(PropertyName = "notifyDate")]
         public DateTime NotifyDate { get; set; }
@@ -31,8 +31,8 @@ namespace PwszAlarm.Model
         [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
 
-        [JsonProperty(PropertyName = "userEmail")]
-        public string UserEmail { get; set; }
+        [JsonProperty(PropertyName = "userId")]
+        public string UserId { get; set; }
 
         [JsonProperty(PropertyName = "notifyDate")]
         public DateTime NotifyDate { get; set; }

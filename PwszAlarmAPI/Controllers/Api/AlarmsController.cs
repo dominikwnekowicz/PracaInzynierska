@@ -11,6 +11,7 @@ using System.Web.Http;
 
 namespace PwszAlarmAPI.Controllers.Api
 {
+    [Authorize]
     public class AlarmsController : ApiController
     {
         private ApplicationDbContext _context;
@@ -79,19 +80,6 @@ namespace PwszAlarmAPI.Controllers.Api
 
             Mapper.Map(alarmDto, alarmInDb);
 
-            _context.SaveChanges();
-        }
-
-        // DELETE /api/alarms/1
-        [HttpDelete]
-        public void DeleteAlarm(int id)
-        {
-            var alarmInDb = _context.Alarms.SingleOrDefault(c => c.Id == id);
-
-            if (alarmInDb == null)
-                throw new HttpResponseException(HttpStatusCode.NotFound);
-
-            _context.Alarms.Remove(alarmInDb);
             _context.SaveChanges();
         }
     }

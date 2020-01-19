@@ -8,6 +8,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web.Http;
 
+using Microsoft.Owin;
+using Microsoft.Owin.Security;
+using Microsoft.Owin.Security.DataHandler.Encoder;
+using Microsoft.Owin.Security.Jwt;
+using Microsoft.Owin.Security.OAuth;
+using Newtonsoft.Json.Serialization;
+using Owin;
+using PwszAlarmAPI.Providers;
+using System.Configuration;
+using System.Net.Http.Formatting;
 namespace PwszAlarmAPI.Controllers.Api
 {
     [RoutePrefix("api/accounts")]
@@ -45,14 +55,14 @@ namespace PwszAlarmAPI.Controllers.Api
         //
         [HttpGet]
         [Authorize]
-        [Route("user/{username}")]
+        [Route("user")]
         public async Task<IHttpActionResult> GetUserByName(string username)
         {
             var user = await this.AppUserManager.FindByNameAsync(username);
 
             if (user != null)
             {
-                return Ok(this.TheModelFactory.Create(user));
+                return Ok(TheModelFactory.Create(user));
             }
 
             return NotFound();
@@ -73,7 +83,7 @@ namespace PwszAlarmAPI.Controllers.Api
 
             var user = new ApplicationUser()
             {
-                UserName = createUserModel.Email.Split('@').ElementAt(0),
+                UserName = createUserModel.UserName,
                 Email = createUserModel.Email,
                 FirstName = createUserModel.FirstName,
                 LastName = createUserModel.LastName,
@@ -99,7 +109,7 @@ namespace PwszAlarmAPI.Controllers.Api
 
         }
         //
-        //GET: api/account/ConfirmEmail
+        //GET: api/accounts/ConfirmEmail
         //
         [AllowAnonymous]
         [HttpGet]
@@ -124,7 +134,7 @@ namespace PwszAlarmAPI.Controllers.Api
             }
         }
         //
-        //POST: api/account/ChangePassword
+        //POST: api/accounts/ChangePassword
         //
         [HttpPost]
         [Authorize]
@@ -146,10 +156,10 @@ namespace PwszAlarmAPI.Controllers.Api
             return Ok();
         }
         //
-        //DELETE: api/account/user/id
+        //DELETE: api/accounts/user/id
         //
         [HttpDelete]
-        [AllowAnonymous]
+        [Authorize]
         [Route("user/{id:guid}")]
         public async Task<IHttpActionResult> DeleteUser(string id)
         {

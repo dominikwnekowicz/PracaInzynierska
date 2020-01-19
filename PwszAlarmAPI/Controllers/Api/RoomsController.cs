@@ -11,7 +11,7 @@ using PwszAlarmAPI.Models;
 
 namespace PwszAlarmAPI.Controllers.Api
 {
-    
+    [Authorize]
     public class RoomsController : ApiController
     {
         private ApplicationDbContext _context;

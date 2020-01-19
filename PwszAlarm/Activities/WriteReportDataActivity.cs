@@ -38,6 +38,8 @@ namespace PwszAlarm.Activities
 
         private void OkButton_Click(object sender, EventArgs e)
         {
+            var user = SQLiteDb.GetUser();
+            if (user.Email == "failed") return;
             InputMethodManager imm = (InputMethodManager)GetSystemService(InputMethodService);
             imm.HideSoftInputFromWindow(nameEditText.WindowToken, 0);
             ShortAlarm shortAlarm = new ShortAlarm();
@@ -46,7 +48,7 @@ namespace PwszAlarm.Activities
             shortAlarm.Archived = false;
             shortAlarm.RoomId = room.Id;
             shortAlarm.Name = nameEditText.Text;
-            shortAlarm.UserEmail = "dominik.wnekowicz@gmail.com";
+            shortAlarm.UserId = user.Id;
             shortAlarm.NotifyDate = Convert.ToDateTime(now);
             _ = WebApiDataController.PostAlarm(this, shortAlarm);
             Task.Delay(3000);

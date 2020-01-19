@@ -13,6 +13,7 @@ using PwszAlarm.PwszAlarmDB;
 using System;
 using Permission = Plugin.Permissions.Abstractions.Permission;
 using System.Threading.Tasks;
+using PwszAlarm.Model;
 
 namespace PwszAlarm.Activities
 {
@@ -20,21 +21,21 @@ namespace PwszAlarm.Activities
 
     public class MainActivity : AppCompatActivity
     {
+        LoggedUser user;
         PermissionStatus status = PermissionStatus.Unknown;
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.LoadingView);
-            ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
-            var signedIn = prefs.GetBoolean("signedin", false);
             Permissions.CheckPermissions(this);
             do
             {
                 PermissionsGranted();
                 if(status == PermissionStatus.Granted)
                 {
-                    if (!signedIn)
+                    user = SQLiteDb.GetUser();
+                    if (user.Email == "failed")
                     {
                         var intent = new Intent(this, typeof(SignInActivity));
                         StartActivityForResult(intent, 1);
@@ -42,14 +43,42 @@ namespace PwszAlarm.Activities
                     }
                     else
                     {
-                        var intent = new Intent(this, typeof(LoadDataActivity));
-                        StartActivity(intent);
-                        Finish();
+                        if (user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
+                        {
+                            //Remember me, Authorization key not actve
+                            var logged = WebApiDataController.LogIn(this, user).Result;
+                            if(logged)
+                            {
+                                //logged in
+                                var intent = new Intent(this, typeof(LoadDataActivity));
+                                StartActivity(intent);
+                                Finish();
+                            }
+                            else
+                            {
+                                //not logged in
+                                SQLiteDb.ShowAlert(this, "Błąd", "Logowanie nie było możliwe. Spróbuj ponownie później.");
+                                Task.Delay(3000);
+                                var intent = new Intent(this, typeof(LoadDataActivity));
+                                StartActivity(intent);
+                                Finish();
+                            }
+                            
+                        }
+                        else if(!user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
+                        {
+                            //Dont remember me
+                            var intent = new Intent(this, typeof(SignInActivity));
+                            StartActivityForResult(intent, 1);
+                            Finish();
+                        }
+                        else
+                        {   //Authorization key still active
+                            var intent = new Intent(this, typeof(LoadDataActivity));
+                            StartActivity(intent);
+                            Finish();
+                        }
                     }
-                }
-                else
-                {
-
                 }
             }
             while (status != PermissionStatus.Granted);

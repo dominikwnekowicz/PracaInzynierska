@@ -277,6 +277,10 @@
     <Compile Include="Migrations\202001150015211_LevelDelete.designer.cs">
       <DependentUpon>202001150015211_LevelDelete.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202001192237584_AlarmEdit.cs" />
+    <Compile Include="Migrations\202001192237584_AlarmEdit.designer.cs">
+      <DependentUpon>202001192237584_AlarmEdit.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\Alarm.cs" />
@@ -353,6 +357,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001150015211_LevelDelete.resx">
       <DependentUpon>202001150015211_LevelDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202001192237584_AlarmEdit.resx">
+      <DependentUpon>202001192237584_AlarmEdit.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
@@ -24,6 +25,14 @@ namespace PwszAlarm.PwszAlarmDB
     {
         static IEnumerable<Room> roomsList;
         static IEnumerable<Alarm> alarmsList;
+        private static SQLiteConnection ConnectWithDb()
+        {
+            string documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
+            string path = Path.Combine(documentsPath, "PwszAlarm.db3");
+            const SQLiteOpenFlags Flags = SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create;
+            SQLiteConnection db = new SQLiteConnection(path, Flags);
+            return db;
+        }
         private static bool TableExist(SQLiteConnection db, string tableName)
         {
             try
@@ -48,10 +57,7 @@ namespace PwszAlarm.PwszAlarmDB
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
             if (status == PermissionStatus.Granted)
             {
-                string documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-                string path = Path.Combine(documentsPath, "PwszAlarm.db3");
-                const SQLiteOpenFlags Flags = SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create;
-                SQLiteConnection db = new SQLiteConnection(path, Flags);
+                var db = ConnectWithDb();
                 var result = TableExist(db, "Alarm");
                 if (!result) db.CreateTable<Alarm>();
                 alarmsList = db.Table<Alarm>().ToList();
@@ -60,6 +66,7 @@ namespace PwszAlarm.PwszAlarmDB
                 {
                     WebApiDataController.GetAlarmsFromApi(db);
                     alarmsList = db.Table<Alarm>().ToList();
+                    db.Close();
                 }
                 else if (alarmsList.Any())
                 {
@@ -74,6 +81,7 @@ namespace PwszAlarm.PwszAlarmDB
             {
                 ShowAlert(activity, "Brak uprawnień", "Brak dostępu do pamięci urządzenia, nie można zapisać pliku bazy danych.");
             }
+            
         }
         public static async void LoadRoomsToDB(Activity activity)
         {
@@ -81,10 +89,7 @@ namespace PwszAlarm.PwszAlarmDB
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
             if(status == PermissionStatus.Granted)
             {
-                string documentsPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.MyDocuments);
-                string path = Path.Combine(documentsPath, "PwszAlarm.db3");
-                const SQLiteOpenFlags Flags = SQLiteOpenFlags.ReadWrite | SQLiteOpenFlags.Create;
-                SQLiteConnection db = new SQLiteConnection(path, Flags);
+                var db = ConnectWithDb();
                 var result = TableExist(db, "Room");
                 if (!result) db.CreateTable<Room>();
                 roomsList = db.Table<Room>().ToList();
@@ -93,6 +98,7 @@ namespace PwszAlarm.PwszAlarmDB
                 {
                     WebApiDataController.GetRoomsFromApi(db);
                     roomsList = db.Table<Room>().ToList();
+                    db.Close();
                 }
                 else if (roomsList.Any())
                 {
@@ -107,6 +113,38 @@ namespace PwszAlarm.PwszAlarmDB
             {
                 ShowAlert(activity, "Brak uprawnień", "Brak dostępu do pamięci urządzenia, nie można zapisać pliku bazy danych.");
             }
+        }
+        public static async void UpdateAccountData(LoggedUser user)
+        {
+            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+            if (status == PermissionStatus.Granted)
+            {
+                var db = ConnectWithDb();
+                var result = TableExist(db, "LoggedUser");
+                if (!result) db.CreateTable<LoggedUser>();
+                var cmd = db.CreateCommand("DELETE FROM LoggedUser");
+                cmd.ExecuteNonQuery();
+                db.InsertOrReplace(user);
+            }
+        }
+        public static LoggedUser GetUser()
+        {
+            var db = ConnectWithDb();
+            var result = TableExist(db, "LoggedUser");
+            LoggedUser loggedUser = new LoggedUser();
+            if (!result) db.CreateTable<LoggedUser>();
+            loggedUser = db.Table<LoggedUser>().ToList().FirstOrDefault();
+            if (loggedUser != null)
+            {
+                return loggedUser;
+            }
+            else
+            {
+                LoggedUser notLoggedUser = new LoggedUser();
+                notLoggedUser.Email = "failed";
+                return notLoggedUser;
+            }
+            
         }
         public static IEnumerable<Room> GetRooms(Activity activity)
         {

@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using PwszAlarm.Model;
+using PwszAlarm.PwszAlarmDB;
 
 namespace PwszAlarm.Activities
 {
@@ -46,9 +47,9 @@ namespace PwszAlarm.Activities
             }
 
             var alarm = alarms[position];
-
+            var rooms = SQLiteDb.GetRooms(activity);
             TextView text1 = view.FindViewById<TextView>(Android.Resource.Id.Text1);
-            text1.Text = alarm.Name;
+            text1.Text = alarm.Name + " - Sala" + rooms.FirstOrDefault(r => r.Id == alarm.RoomId).Name;
 
             TextView text2 = view.FindViewById<TextView>(Android.Resource.Id.Text2);
             text2.Text = alarm.NotifyDate.Date.ToShortDateString() + " - " + alarm.NotifyDate.TimeOfDay.ToString();
