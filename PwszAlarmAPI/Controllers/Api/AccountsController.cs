@@ -155,6 +155,35 @@ namespace PwszAlarmAPI.Controllers.Api
 
             return Ok();
         }
+
+        public class FirebaseToken
+        {
+            public string UserId { get; set; }
+            public string Token { get; set; }
+        }
+        //
+        //POST: api/accounts/user/token
+        //
+        [HttpPost]
+        [Authorize]
+        [Route("user/fcmtoken")]
+        public async Task<IHttpActionResult> PostFirebaseToken(FirebaseToken firebaseToken)
+        {
+            var user = await this.AppUserManager.FindByIdAsync(firebaseToken.UserId);
+            if (user != null)
+            {
+                user.FirebaseToken = firebaseToken.Token;
+                IdentityResult result = await this.AppUserManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+
+                return Ok();
+            }
+
+            return NotFound();
+        }
         //
         //DELETE: api/accounts/user/id
         //

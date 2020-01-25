@@ -13,11 +13,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using Plugin.Connectivity;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
 using PwszAlarm.Model;
 using SQLite;
-using Xamarin.Essentials;
 
 namespace PwszAlarm.PwszAlarmDB
 {
@@ -61,8 +61,7 @@ namespace PwszAlarm.PwszAlarmDB
                 var result = TableExist(db, "Alarm");
                 if (!result) db.CreateTable<Alarm>();
                 alarmsList = db.Table<Alarm>().ToList();
-                var connection = Connectivity.NetworkAccess;
-                if (connection == NetworkAccess.Internet)
+                if (CrossConnectivity.Current.IsConnected)
                 {
                     WebApiDataController.GetAlarmsFromApi(db);
                     alarmsList = db.Table<Alarm>().ToList();
@@ -93,8 +92,7 @@ namespace PwszAlarm.PwszAlarmDB
                 var result = TableExist(db, "Room");
                 if (!result) db.CreateTable<Room>();
                 roomsList = db.Table<Room>().ToList();
-                var connection = Connectivity.NetworkAccess;
-                if (connection == NetworkAccess.Internet)
+                if (CrossConnectivity.Current.IsConnected)
                 {
                     WebApiDataController.GetRoomsFromApi(db);
                     roomsList = db.Table<Room>().ToList();

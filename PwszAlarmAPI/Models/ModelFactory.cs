@@ -32,6 +32,13 @@ namespace PwszAlarmAPI.Models
                 JoinDate = appUser.JoinDate,
             };
         }
+        public UserFCMReturnModel Notify(ApplicationUser appUser)
+        {
+            return new UserFCMReturnModel
+            {
+                FirebaseToken = appUser.FirebaseToken
+            };
+        }
     }
 
     public class UserReturnModel
@@ -45,5 +52,9 @@ namespace PwszAlarmAPI.Models
         public DateTime JoinDate { get; set; }
         public IList<string> Roles { get; set; }
         public IList<System.Security.Claims.Claim> Claims { get; set; }
+    }
+    public class UserFCMReturnModel
+    {
+    public string FirebaseToken { get; set; }
     }
 }

@@ -50,7 +50,7 @@ namespace PwszAlarm.Activities
             shortAlarm.Name = nameEditText.Text;
             shortAlarm.UserId = user.Id;
             shortAlarm.NotifyDate = Convert.ToDateTime(now);
-            _ = WebApiDataController.PostAlarm(this, shortAlarm);
+            WebApiDataController.PostAlarm(this, shortAlarm);
             Task.Delay(3000);
             Finish();
         }

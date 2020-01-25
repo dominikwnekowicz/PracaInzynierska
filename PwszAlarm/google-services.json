@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "258552288876",
+    "firebase_url": "https://pwszalarm-76173.firebaseio.com",
+    "project_id": "pwszalarm-76173",
+    "storage_bucket": "pwszalarm-76173.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:258552288876:android:47bbdfc85a33daf8986a49",
+        "android_client_info": {
+          "package_name": "com.pwsz.alarm"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "258552288876-i4f6jslbvpqlm1j2rgo4ncfh0hi1egqr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDqwkmnbf7V7tX1Jw1gamvRYP8G8AHDWpI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "258552288876-i4f6jslbvpqlm1j2rgo4ncfh0hi1egqr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

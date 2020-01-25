@@ -10,6 +10,7 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Plugin.Connectivity;
 using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
 
@@ -28,14 +29,13 @@ namespace PwszAlarm.Activities
 
             // Create your application here
             SetContentView(Resource.Layout.SignIn);
-
-            var registered = Intent.GetBooleanExtra("registered", false);
+             var registered = Intent.GetBooleanExtra("registered", false);
             Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
             Button signinButton = FindViewById<Button>(Resource.Id.signinButton);
             emailEditText = FindViewById<EditText>(Resource.Id.emailEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
             rememberMe = FindViewById<CheckBox>(Resource.Id.rememberCheckBox);
-            if(registered)
+            if (registered)
             {
                 emailEditText.Text = Intent.GetStringExtra("email");
             }
@@ -85,9 +85,11 @@ namespace PwszAlarm.Activities
 
         private async void SigninButton_Click(object sender, EventArgs e)
         {
+            SetContentView(Resource.Layout.LoadingView);
             bool loggedIn;
             if (!dataValid )
             {
+                SetContentView(Resource.Layout.SignIn);
                 SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
                 return;
             }
@@ -99,13 +101,13 @@ namespace PwszAlarm.Activities
             }
             if(loggedIn)
             {
-                SQLiteDb.UpdateAccountData(loggedUser);
-                var intent = new Intent(this, typeof(LoadDataActivity));
+                var intent = new Intent(this, typeof(NotificationActivity));
                 StartActivity(intent);
                 Finish();
             }
             else
             {
+                SetContentView(Resource.Layout.SignIn);
                 SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
             }
         }

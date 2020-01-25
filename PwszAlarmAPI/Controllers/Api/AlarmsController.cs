@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace PwszAlarmAPI.Controllers.Api
@@ -49,21 +51,22 @@ namespace PwszAlarmAPI.Controllers.Api
 
             return Ok(Mapper.Map<Alarm, AlarmDto>(alarm));
         }
-
+        
         // POST /api/alarms
         [HttpPost]
-        public IHttpActionResult CreateAlarm(AlarmDto alarmDto)
+        public async Task<IHttpActionResult> CreateAlarm(AlarmDto alarmDto)
         {
-            if (!ModelState.IsValid)
-                return BadRequest();
+            if (!ModelState.IsValid) return BadRequest();
 
             var alarm = Mapper.Map<AlarmDto, Alarm>(alarmDto);
             _context.Alarms.Add(alarm);
             _context.SaveChanges();
-
+            var rooms = _context.Rooms.ToList().Select(Mapper.Map<Room, Room>);
+            var room = rooms.FirstOrDefault(r => r.Id == alarmDto.RoomId);
             alarmDto.Id = alarm.Id;
-
-            return Created(new Uri(Request.RequestUri + "/" + alarm.Id), alarmDto );
+            string title = alarmDto.Name + " - Sala: " + room.Name + " - " + alarmDto.NotifyDate.ToString();
+            await ApplicationFirebase.SendData(title, title);
+            return Ok();
         }
 
         // PUT /api/alarms/1
