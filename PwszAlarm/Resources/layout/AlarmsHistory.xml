@@ -3,10 +3,47 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
     android:gravity="center">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarmsToolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="10dp">
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/newAlarmsButton"
+            android:text="Nowe"
+            android:background="@drawable/buttonborder"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/archivedAlarmsButton"
+            android:background="#FFFFFF"
+            android:text="Archiwum"/>
+
+    </LinearLayout>
+    <EditText
+        android:inputType="text"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/alarmsSearchEditText"
+        android:visibility="gone"
+        android:paddingHorizontal="10dp"
+        android:drawableLeft="@android:drawable/ic_menu_search"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="10dp"
         android:id="@+id/alarmsListView"/>
 </LinearLayout>

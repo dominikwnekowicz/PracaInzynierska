@@ -30,7 +30,7 @@ namespace PwszAlarmAPI.Controllers.Api
             var alarms = _context.Alarms.ToList().Select(Mapper.Map<Alarm, AlarmDto>);
             foreach(var alarmDto in alarms )
             {
-                if(DateTime.Now.Subtract(alarmDto.NotifyDate).TotalDays >= 30)
+                if(DateTime.Now.Subtract(alarmDto.NotifyDate).TotalDays >= 7)
                 {
                     _context.Alarms.FirstOrDefault(a => a.Id == alarmDto.Id).Archived = true;
                 }

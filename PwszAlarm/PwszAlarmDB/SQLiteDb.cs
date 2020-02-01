@@ -51,7 +51,7 @@ namespace PwszAlarm.PwszAlarmDB
                 return false;
             }
         }
-        public static async void LoadAlarmsToDb(Activity activity)
+        public static async Task LoadAlarmsToDb(Activity activity)
         {
             Permissions.CheckPermissions(activity);
             var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
@@ -129,17 +129,18 @@ namespace PwszAlarm.PwszAlarmDB
         {
             var db = ConnectWithDb();
             var result = TableExist(db, "LoggedUser");
-            LoggedUser loggedUser = new LoggedUser();
             if (!result) db.CreateTable<LoggedUser>();
-            loggedUser = db.Table<LoggedUser>().ToList().FirstOrDefault();
+            var loggedUser = db.Table<LoggedUser>().ToList().FirstOrDefault();
             if (loggedUser != null)
             {
                 return loggedUser;
             }
             else
             {
-                LoggedUser notLoggedUser = new LoggedUser();
-                notLoggedUser.Email = "failed";
+                LoggedUser notLoggedUser = new LoggedUser
+                {
+                    Email = "failed"
+                };
                 return notLoggedUser;
             }
             
@@ -149,9 +150,9 @@ namespace PwszAlarm.PwszAlarmDB
             if (!roomsList.Any()) LoadRoomsToDB(activity);
             return roomsList;
         }
-        public static IEnumerable<Alarm> GetAlarms(Activity activity)
+        public static async Task<IEnumerable<Alarm>> GetAlarms(Activity activity)
         {
-            if (!alarmsList.Any()) LoadAlarmsToDb(activity);
+            if (!alarmsList.Any()) await LoadAlarmsToDb(activity);
             return alarmsList;
         }
         public static void ShowAlert(Activity activity, string title, string message)

@@ -8,6 +8,7 @@ using Android.Content;
 using Android.OS;
 using Android.Preferences;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using PwszAlarm.Model;
@@ -16,7 +17,7 @@ using PwszAlarm.PwszAlarmDB;
 namespace PwszAlarm.Activities
 {
     [Activity(Label = "ReportEmergencyActivity")]
-    public class ReportEmergencyActivity : Activity
+    public class ReportEmergencyActivity : AppCompatActivity
     {
         private List<string> roomsStringList = new List<string>();
         private List<string> floorsStringList = new List<string>();
@@ -27,14 +28,15 @@ namespace PwszAlarm.Activities
 
         public override void OnBackPressed()
         {
-            if (page == 2)
+            if (page == 2) //rooms list
             {
+                SupportActionBar.Title = "Piętro";
                 ArrayAdapter<string> adapter = new ArrayAdapter<string>(this, Android.Resource.Layout.SimpleListItem1, floorsStringList);
                 reportListView.Adapter = adapter;
                 roomsStringList.Clear();
                 page--;
             }
-            else
+            else //floors list
             {
                 base.OnBackPressed();
             }
@@ -45,6 +47,9 @@ namespace PwszAlarm.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.ReportEmergency);
             reportListView = FindViewById<ListView>(Resource.Id.reportListView);
+            var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.reportEmergencyToolbar);
+            SetSupportActionBar(toolbar);
+            SupportActionBar.Title = "Piętro";
             roomsList = SQLiteDb.GetRooms(this);
             if (!roomsList.Any())
             {
@@ -64,9 +69,11 @@ namespace PwszAlarm.Activities
         private void ListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var selectedItem = e.Position;
-            if (page == 1)
+            if (page == 1) // rooms list
             {
+                
                 var floor = floorsStringList.ElementAt(selectedItem);
+                SupportActionBar.Title = floor;
                 foreach (Room r in roomsList.ToList())
                 {
                     if (r.Floor == floor)
@@ -80,7 +87,7 @@ namespace PwszAlarm.Activities
                 if(selectedItem == 0) choosenFloor = floorsStringList.ElementAt(selectedItem);
                 else choosenFloor = floorsStringList.ElementAt(selectedItem).Split(" ").ElementAt(0);
             }
-            else
+            else // floors list
             {
                 var choosenRoom = roomsStringList.ElementAt(selectedItem).Split(" ").ElementAt(1);
                 var intent = new Intent(this, typeof(WriteReportDataActivity));

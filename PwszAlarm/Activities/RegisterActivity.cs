@@ -45,6 +45,18 @@ namespace PwszAlarm.Activities
             confirmEditText.TextChanged += ConfirmEditText_TextChanged;
             firstNameEditText.TextChanged += FirstNameEditText_TextChanged;
             lastNameEditText.TextChanged += LastNameEditText_TextChanged;
+
+            confirmEditText.EditorAction += (sender, e) =>
+            {
+                if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                {
+                    registerButton.PerformClick();
+                }
+                else
+                {
+                    e.Handled = false;
+                }
+            };
         }
 
         private void LastNameEditText_TextChanged(object sender, Android.Text.TextChangedEventArgs e)

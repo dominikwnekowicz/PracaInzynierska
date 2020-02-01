@@ -1,4 +1,6 @@
-﻿using Microsoft.Owin;
+﻿using Microsoft.AspNet.SignalR;
+using Microsoft.Owin;
+using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security;
 using Microsoft.Owin.Security.DataHandler.Encoder;
 using Microsoft.Owin.Security.Jwt;
@@ -28,9 +30,11 @@ namespace PwszAlarmAPI
 
             ConfigureWebApi(httpConfig);
 
-            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+            app.UseCors(CorsOptions.AllowAll);
 
             app.UseWebApi(httpConfig);
+
+            app.MapSignalR();
         }
 
         private void ConfigureWebApi(HttpConfiguration config)

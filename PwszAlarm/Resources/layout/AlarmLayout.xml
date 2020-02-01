@@ -1,7 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/toolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    
+    <ListView
+    android:id="@+id/messagesListView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="16dp"
+    android:paddingHorizontal="16dp"
+    android:layout_below="@id/toolbar"
+    android:layout_above="@id/newMessageLinearLayout"
+    android:layout_marginBottom="16dp"
+    android:stackFromBottom="true"
+    android:transcriptMode="alwaysScroll"/>
 
-</LinearLayout>
+    <LinearLayout
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/newMessageLinearLayout"
+        android:layout_marginTop="0.0dp">
+        <EditText
+            android:inputType="textMultiLine"
+            android:layout_width="wrap_content"
+            android:maxHeight="300dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/newMessageEditText"
+            android:layout_marginRight="0.0dp" />
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:src="@drawable/send"
+            android:layout_gravity="center"
+            android:scaleType="centerInside"
+            android:background="#FFFFFF"
+            android:id="@+id/sendMessageImageButton" />
+    </LinearLayout>
+
+</RelativeLayout>

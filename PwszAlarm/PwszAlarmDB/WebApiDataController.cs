@@ -19,7 +19,7 @@ using SQLite;
 
 namespace PwszAlarm.PwszAlarmDB
 {
-    public class WebApiDataController
+    public static class WebApiDataController
     {
         public static void GetRoomsFromApi(SQLiteConnection db)
         {
@@ -29,7 +29,7 @@ namespace PwszAlarm.PwszAlarmDB
             {
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loggedUser.Authorization);
-                var url = "http://192.168.1.10/PwszAlarmAPI/api/rooms";
+                var url = "http://192.168.1.18/PwszAlarmAPI/api/rooms";
                 //GET/api/rooms
                 var content = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
                 rooms = JsonConvert.DeserializeObject<List<Room>>(content);
@@ -49,7 +49,7 @@ namespace PwszAlarm.PwszAlarmDB
             {
                 var httpClient = new HttpClient();
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loggedUser.Authorization);
-                var url = "http://192.168.1.10/PwszAlarmAPI/api/alarms";
+                var url = "http://192.168.1.18/PwszAlarmAPI/api/alarms";
                 //GET/api/alarms
                 var content = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
                 alarms = JsonConvert.DeserializeObject<List<Alarm>>(content);
@@ -61,13 +61,44 @@ namespace PwszAlarm.PwszAlarmDB
                 }
             }
         }
+        public static List<Messages> GetMessages(int alarmId)
+        {
+            IEnumerable<Messages> messages = new List<Messages>();
+            LoggedUser loggedUser = SQLiteDb.GetUser();
+            if (loggedUser.Email != "failed")
+            {
+                var httpClient = new HttpClient();
+                httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loggedUser.Authorization);
+                var url = "http://192.168.1.18/PwszAlarmAPI/api/messages?id="+alarmId;
+                //GET/api/messages
+                var content = httpClient.GetStringAsync(url).GetAwaiter().GetResult();
+                messages = JsonConvert.DeserializeObject<List<Messages>>(content);
+                if (messages.Any())
+                {
+                    return messages.ToList();
+                }
+            }
+                //else
+                var message = new Messages()
+                {
+                    Id = 1,
+                    AlarmId = 1,
+                    Message = "failed",
+                    MessageTime = DateTime.Now,
+                    UserName = "failed"
+
+                };
+                var messagesList = messages.ToList();
+                messagesList.Add(message);
+                return messagesList;
+        }
         public static async void PostAlarm(Activity activity, ShortAlarm shortAlarm)
         {
             LoggedUser loggedUser = SQLiteDb.GetUser();
             if (loggedUser.Email != "failed")
             {
                 var httpClient = new HttpClient();
-                var url = "http://192.168.1.10/PwszAlarmAPI/api/alarms";
+                var url = "http://192.168.1.18/PwszAlarmAPI/api/alarms";
                 //POST /api/alarms
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loggedUser.Authorization);
                 var alarmJson = JsonConvert.SerializeObject(shortAlarm);
@@ -76,7 +107,7 @@ namespace PwszAlarm.PwszAlarmDB
                 if (response.IsSuccessStatusCode)
                 {
                     Toast.MakeText(activity, "Zgłoszenie wysłane", ToastLength.Short).Show();
-                    SQLiteDb.LoadAlarmsToDb(activity);
+                    await SQLiteDb.LoadAlarmsToDb(activity);
                 }
             }
         }
@@ -91,7 +122,7 @@ namespace PwszAlarm.PwszAlarmDB
         public static async  void PostNotifyToken(string token)
         {
             LoggedUser loggedUser = SQLiteDb.GetUser();
-            if (token != null || token != "")
+            if (!string.IsNullOrEmpty(token))
             {
                 var notifyToken = new NotifyToken
                 {
@@ -99,7 +130,7 @@ namespace PwszAlarm.PwszAlarmDB
                     Token = token
                 };
                 var httpClient = new HttpClient();
-                var url = "http://192.168.1.10/PwszAlarmAPI/api/accounts/user/fcmtoken";
+                var url = "http://192.168.1.18/PwszAlarmAPI/api/accounts/user/fcmtoken";
                 //POST /api/accounts/user/token
                 httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loggedUser.Authorization);
                 var tokenJson = JsonConvert.SerializeObject(notifyToken);
@@ -109,22 +140,20 @@ namespace PwszAlarm.PwszAlarmDB
         }
         public static async Task<bool> RegisterUser(Activity activity, RegisterUser user)
         {
-            using (var httpClient = new HttpClient())
+            using var httpClient = new HttpClient();
+            var url = "http://192.168.1.18/PwszAlarmAPI/api/accounts/create";
+            var userJson = JsonConvert.SerializeObject(user);
+            var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = null;
+            response = await httpClient.PostAsync(url, httpContent);
+            if (response.IsSuccessStatusCode)
             {
-                var url = "http://192.168.1.10/PwszAlarmAPI/api/accounts/create";
-                var userJson = JsonConvert.SerializeObject(user);
-                var httpContent = new StringContent(userJson, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = null;
-                response = await httpClient.PostAsync(url, httpContent);
-                if (response.IsSuccessStatusCode)
-                {
-                    Toast.MakeText(activity, "Zarejestrowano pomyślnie", ToastLength.Short).Show();
-                    return true;
-                }
-                return false;
+                Toast.MakeText(activity, "Zarejestrowano pomyślnie", ToastLength.Short).Show();
+                return true;
             }
+            return false;
         }
-        public static async Task<bool> LogIn(Activity activity, LoggedUser user)
+        public static async Task<bool> LogIn(LoggedUser user)
         {
             AuthToken authToken = Authorize(user);
             if (authToken.AuthDT != 0)
@@ -133,7 +162,7 @@ namespace PwszAlarm.PwszAlarmDB
                 if(loggedUser.Email != user.Email)
                 {
                     var httpClient = new HttpClient();
-                    var url = "http://192.168.1.10/PwszAlarmAPI/api/accounts/user?username=" + user.UserName;
+                    var url = "http://192.168.1.18/PwszAlarmAPI/api/accounts/user?username=" + user.UserName;
                     httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", authToken.AccessToken);
                     var content = await httpClient.GetStringAsync(url);
                     loggedUser = JsonConvert.DeserializeObject<LoggedUser>(content);
@@ -158,7 +187,7 @@ namespace PwszAlarm.PwszAlarmDB
         {
             AuthToken authToken = new AuthToken();
             var httpClient = new HttpClient();
-            var url = "http://192.168.1.10/PwszAlarmAPI/oauth/token";
+            var url = "http://192.168.1.18/PwszAlarmAPI/oauth/token";
             string body = "username=" + user.UserName + "&password=" + user.Password + "&grant_type=password";
             var httpContent = new StringContent(body);
             httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

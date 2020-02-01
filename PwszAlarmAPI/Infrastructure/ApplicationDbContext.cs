@@ -12,6 +12,7 @@ namespace PwszAlarmAPI.Infrastructure
     {
         public DbSet<Room> Rooms { get; set; }
         public DbSet<Alarm> Alarms { get; set; }
+        public DbSet<Messages> Messages { get; set; }
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {

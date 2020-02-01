@@ -22,12 +22,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/passwordEditText"
         android:layout_marginVertical="5dp"/>
-    <CheckBox
-        android:text="Remember me"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/rememberCheckBox"
-        android:layout_marginVertical="5dp"/>
     <Button
         android:text="Sign in"
         android:textSize="16dp"

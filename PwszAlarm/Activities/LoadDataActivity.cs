@@ -21,7 +21,7 @@ namespace PwszAlarm.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.LoadingView);
             SQLiteDb.LoadRoomsToDB(this);
-            SQLiteDb.LoadAlarmsToDb(this);
+            await SQLiteDb.LoadAlarmsToDb(this);
             await Task.Delay(1000);
             var intent = new Intent(this, typeof(MainPageActivity));
             StartActivity(intent);

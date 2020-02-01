@@ -21,7 +21,6 @@ namespace PwszAlarm.Activities
     {
         private bool dataValid = false;
         EditText emailEditText, passwordEditText;
-        CheckBox rememberMe;
         LoggedUser loggedUser = new LoggedUser();
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -34,7 +33,7 @@ namespace PwszAlarm.Activities
             Button signinButton = FindViewById<Button>(Resource.Id.signinButton);
             emailEditText = FindViewById<EditText>(Resource.Id.emailEditText);
             passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
-            rememberMe = FindViewById<CheckBox>(Resource.Id.rememberCheckBox);
+
             if (registered)
             {
                 emailEditText.Text = Intent.GetStringExtra("email");
@@ -43,6 +42,18 @@ namespace PwszAlarm.Activities
             signinButton.Click += SigninButton_Click;
             emailEditText.TextChanged += EmailEditText_TextChanged;
             passwordEditText.TextChanged += PasswordEditText_TextChanged;
+
+            passwordEditText.EditorAction += (sender, e) =>
+            {
+                if (e.ActionId == Android.Views.InputMethods.ImeAction.Done)
+                {
+                    signinButton.PerformClick();
+                }
+                else
+                {
+                    e.Handled = false;
+                }
+            };
 
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             ISharedPreferencesEditor editor = prefs.Edit();
@@ -85,18 +96,17 @@ namespace PwszAlarm.Activities
 
         private async void SigninButton_Click(object sender, EventArgs e)
         {
-            SetContentView(Resource.Layout.LoadingView);
+            
             bool loggedIn;
             if (!dataValid )
             {
-                SetContentView(Resource.Layout.SignIn);
                 SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
                 return;
             }
             else
             {
-                loggedUser.RememberMe = rememberMe.Selected;
-                loggedIn = await WebApiDataController.LogIn(this, loggedUser);
+                loggedUser.RememberMe = true;
+                loggedIn = await WebApiDataController.LogIn(loggedUser);
                 
             }
             if(loggedIn)
@@ -107,8 +117,8 @@ namespace PwszAlarm.Activities
             }
             else
             {
-                SetContentView(Resource.Layout.SignIn);
                 SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
+                return;
             }
         }
 

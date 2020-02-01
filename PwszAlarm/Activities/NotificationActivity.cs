@@ -20,8 +20,8 @@ namespace PwszAlarm.Activities
     [Activity(Label = "NotificationActivity")]
     public class NotificationActivity : Activity
     {
-        internal static readonly string CHANNEL_ID = "notification_channel";
-        internal static readonly int NOTIFICATION_ID = 100;
+        internal const string CHANNEL_ID = "notification_channel";
+        internal const int NOTIFICATION_ID = 100;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {

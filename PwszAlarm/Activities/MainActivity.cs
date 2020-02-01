@@ -45,7 +45,7 @@ namespace PwszAlarm.Activities
                         if (user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
                         {
                             //Remember me, Authorization key not actve
-                            var logged = WebApiDataController.LogIn(this, user).Result;
+                            var logged = WebApiDataController.LogIn(user).Result;
                             if(logged)
                             {
                                 //logged in

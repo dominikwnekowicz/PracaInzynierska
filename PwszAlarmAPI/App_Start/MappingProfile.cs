@@ -16,6 +16,8 @@ namespace PwszAlarmAPI.App_Start
             CreateMap<AlarmDto, Alarm>();
             CreateMap<Room, RoomDto>();
             CreateMap<RoomDto, Room>();
+            CreateMap<Messages, MessagesDto>();
+            CreateMap<MessagesDto, Messages>();
         }
     }
 }
