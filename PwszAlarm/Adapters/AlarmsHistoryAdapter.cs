@@ -75,6 +75,15 @@ namespace PwszAlarm.Activities
                 text2.SetTextColor(Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.White));
                 text2.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text2Size*1.2));
             }
+            else
+            {
+                view.SetBackgroundColor(Android.Graphics.Color.White);
+                text1.SetTextColor(Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Black));
+                text1.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text1Size));
+                text2.SetTextColor(Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Black));
+                text2.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text2Size));
+            }
+
 
             return view;
         }

@@ -69,6 +69,29 @@ namespace PwszAlarmAPI.Controllers.Api
 
         }
         //
+        //POST api/accounts/user/notification
+        //
+        [HttpGet]
+        [Authorize]
+        [Route("user/notifications")]
+        public async Task<IHttpActionResult> ChangeSendNotificationsAsync(string userId, bool sendNotifications)
+        {
+            var user = await this.AppUserManager.FindByIdAsync(userId);
+            if (user != null)
+            {
+                user.SendNotifications = sendNotifications;
+                IdentityResult result = await this.AppUserManager.UpdateAsync(user);
+                if (!result.Succeeded)
+                {
+                    return GetErrorResult(result);
+                }
+
+                return Ok();
+            }
+
+            return NotFound();
+        }
+        //
         //POST api/accounts/create
         //
         [HttpPost]
@@ -88,6 +111,7 @@ namespace PwszAlarmAPI.Controllers.Api
                 FirstName = createUserModel.FirstName,
                 LastName = createUserModel.LastName,
                 JoinDate = DateTime.Now.Date,
+                SendNotifications = true
             };
 
             IdentityResult addUserResult = await AppUserManager.CreateAsync(user, createUserModel.Password);

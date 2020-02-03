@@ -85,7 +85,7 @@ namespace PwszAlarm.Activities
                 {
                     var alarmString = new AlarmsString
                     {
-                        Text = alarm.Name + " - " + "Sala " + rooms.FirstOrDefault(r => r.Id == alarm.RoomId).Name,
+                        Text = alarm.Name + " - " + rooms.FirstOrDefault(r => r.Id == alarm.RoomId).Name,
                         Id = alarm.Id
                     };
                     alarmsStringsList.Add(alarmString);

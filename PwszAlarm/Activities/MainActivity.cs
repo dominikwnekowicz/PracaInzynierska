@@ -85,7 +85,9 @@ namespace PwszAlarm.Activities
         }
         private async void PermissionsGranted()
         {
-            status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+            var location = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.LocationAlways);
+            var storage = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+            if (location == PermissionStatus.Granted && storage == PermissionStatus.Granted) status = PermissionStatus.Granted;
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {

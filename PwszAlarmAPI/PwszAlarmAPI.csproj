@@ -385,6 +385,10 @@
     <Compile Include="Migrations\202001270952325_MessagesClassAdded.designer.cs">
       <DependentUpon>202001270952325_MessagesClassAdded.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202002031156524_LocalizationFirebaseNotifications.cs" />
+    <Compile Include="Migrations\202002031156524_LocalizationFirebaseNotifications.designer.cs">
+      <DependentUpon>202002031156524_LocalizationFirebaseNotifications.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountBindingModels.cs" />
     <Compile Include="Models\Alarm.cs" />
@@ -473,6 +477,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202001270952325_MessagesClassAdded.resx">
       <DependentUpon>202001270952325_MessagesClassAdded.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202002031156524_LocalizationFirebaseNotifications.resx">
+      <DependentUpon>202002031156524_LocalizationFirebaseNotifications.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

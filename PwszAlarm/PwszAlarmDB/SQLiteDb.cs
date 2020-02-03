@@ -166,6 +166,21 @@ namespace PwszAlarm.PwszAlarmDB
                 alert.Hide();
             });
             alert.Show();
+            alert.GetButton(1);
+        }
+        public static async Task LogOut()
+        {
+            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+            if (status == PermissionStatus.Granted)
+            {
+                var db = ConnectWithDb();
+                var result = TableExist(db, "LoggedUser");
+                if (result)
+                {
+                    var cmd = db.CreateCommand("DELETE FROM LoggedUser");
+                    cmd.ExecuteNonQuery();
+                }
+            }
         }
         public static Room FindRoom(string roomName)
         {

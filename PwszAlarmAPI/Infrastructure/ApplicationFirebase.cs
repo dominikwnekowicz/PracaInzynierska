@@ -37,7 +37,7 @@ namespace PwszAlarmAPI.Infrastructure
         public async Task SendNotificationsAsync(string _title, string _body)
         {
             var usersContext = new ApplicationDbContext();
-            var users = usersContext.Users.ToList();
+            var users = usersContext.Users.Where(u => u.SendNotifications == true).ToList();
             var applicationID = "AAAAPDLq1mw:APA91bEU9YUz6LL-5zrjyHRzxi2a_7CViesVgN0u_0Xyjfeo8Lwqa6q4sEHuYUy-s61XmQsYa1jQ8ab2v7M84_VfHPXejnSP-uzBFTISS08gs9a8N6xgHGfgHRMCvy017oo3jXSgwVjd";
             List<string> tokens = new List<string>();
            

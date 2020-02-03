@@ -23,6 +23,9 @@ namespace PwszAlarmAPI.Infrastructure
 
         public string FirebaseToken { get; set; }
 
+        [Required]
+        public bool SendNotifications { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
         {
             var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);

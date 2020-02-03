@@ -83,6 +83,7 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="Activities\ReportEmergencyActivity.cs" />
+    <Compile Include="UserLocationService.cs" />
     <Compile Include="Model\Messages.cs" />
     <Compile Include="Notifications\FirebaseIIDService.cs" />
     <Compile Include="Notifications\FirebaseMessageService.cs" />
@@ -197,6 +198,9 @@
       <Version>60.1142.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Basement">
+      <Version>60.1142.1</Version>
+    </PackageReference>
+    <PackageReference Include="Xamarin.GooglePlayServices.Location">
       <Version>60.1142.1</Version>
     </PackageReference>
     <PackageReference Include="Xamarin.GooglePlayServices.Tasks">

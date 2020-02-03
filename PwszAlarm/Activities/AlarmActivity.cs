@@ -42,6 +42,8 @@ namespace PwszAlarm.Activities
             base.OnCreate(savedInstanceState);
             SetContentView(Resource.Layout.AlarmLayout);
             messagesListView = FindViewById<ListView>(Resource.Id.messagesListView);
+            var newMessageLinearLayout = FindViewById<LinearLayout>(Resource.Id.newMessageLinearLayout);
+            if (alarm.Archived == true) newMessageLinearLayout.Visibility = ViewStates.Gone;
 
             loggedUser = SQLiteDb.GetUser();
             LoadMessages(alarmId);

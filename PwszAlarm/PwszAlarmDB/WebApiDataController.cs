@@ -206,5 +206,14 @@ namespace PwszAlarm.PwszAlarmDB
                 return authToken;
             }
         }
+        public static async Task SetSendNotificationsAsync(bool sendNotifications)
+        {
+            LoggedUser loggedUser = SQLiteDb.GetUser();
+            var httpClient = new HttpClient();
+            var url = "http://192.168.1.18/PwszAlarmAPI/api/accounts/user/notifications?userId=" + loggedUser.Id + "&sendNotifications=" + sendNotifications;
+            //POST /api/accounts/user/notifications
+            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", loggedUser.Authorization);
+            var result = await httpClient.GetAsync(url);
+        }
     }
 }

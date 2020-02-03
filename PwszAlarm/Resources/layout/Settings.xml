@@ -28,13 +28,14 @@
         android:checked="true"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:id="@+id/GpsSwitch" />
+        android:id="@+id/gpsSwitch" />
         </LinearLayout>
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Wyloguj"
         android:layout_alignParentBottom="true"
+        android:id="@+id/logOutButton"
         android:paddingVertical="15dp"
         android:background="#FFFFFF"/>
 

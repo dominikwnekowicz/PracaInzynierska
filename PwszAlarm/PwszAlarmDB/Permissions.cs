@@ -18,14 +18,24 @@ namespace PwszAlarm.PwszAlarmDB
     {
         public static async void CheckPermissions(Activity activity)
         {
-            var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
-            if (status != PermissionStatus.Granted)
+            var storage = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Storage);
+            var location = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.LocationAlways);
+            if (storage != PermissionStatus.Granted || location != PermissionStatus.Granted)
             {
                 if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.Storage))
                 {
-                    SQLiteDb.ShowAlert(activity, "Uprawnienia", "Potrzebujemy uprawnień do dostępu do pamięci.");
+                    SQLiteDb.ShowAlert(activity, "Uprawnienia", "Potrzebujemy uprawnień do pamięci.");
                 }
-                var results = CrossPermissions.Current.RequestPermissionsAsync(Permission.Storage);
+                if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Permission.LocationAlways))
+                {
+                    SQLiteDb.ShowAlert(activity, "Uprawnienia", "Potrzebujemy uprawnień do lokalizacji.");
+                }
+                Permission[] permissions =
+                {
+                    Permission.Storage,
+                    Permission.LocationAlways
+                };
+                var results = await CrossPermissions.Current.RequestPermissionsAsync(permissions);
             }
         }
     }
