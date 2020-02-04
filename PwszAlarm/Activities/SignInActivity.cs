@@ -101,6 +101,7 @@ namespace PwszAlarm.Activities
             if (!dataValid )
             {
                 SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, dane nie są poprawne.");
+                SetContentView(Resource.Layout.SignIn);
                 return;
             }
             else
@@ -118,6 +119,7 @@ namespace PwszAlarm.Activities
             else
             {
                 SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
+                SetContentView(Resource.Layout.SignIn);
                 return;
             }
         }
