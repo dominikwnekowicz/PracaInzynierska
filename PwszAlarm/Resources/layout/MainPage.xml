@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+    <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@android:color/white"
     android:id="@+id/mainLinearLayout"
+        android:layout_alignParentStart="true"
     android:layout_gravity="center">
     <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
@@ -30,11 +34,11 @@
         android:gravity="center"
         />
     <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/linearLayout1"
-            android:layout_gravity="center">
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/linearLayout1"
+        android:layout_gravity="center">
 
         <Button
             android:text="Plany Budynku"
@@ -61,23 +65,37 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
-    <Button
-        android:id="@+id/reportButton"
-        android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:textColor="#ff7f0000"
-        android:textSize="30dp"
-        android:text="Zgłoś zagrożenie"
-        android:background="@android:color/white" />
         <Button
-        android:id="@+id/settingsButton"
+            android:id="@+id/reportButton"
+            android:layout_width="match_parent"
+            android:layout_height="125dp"
+            android:textColor="#ff7f0000"
+            android:textSize="30dp"
+            android:text="Zgłoś zagrożenie"
+            android:background="@android:color/white" />
+        <Button
+            android:id="@+id/settingsButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:textSize="20dp"
+            android:text="Ustawienia"
+            android:background="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>
+
+    <Refractored.Fab.FloatingActionButton
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        
-        android:textColor="#000000"
-        android:textSize="20dp"
-        android:text="Ustawienia"
-        android:background="@android:color/white" />
-    </LinearLayout>
+        android:id="@+id/mainPageFloatingActionButton" 
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:padding="25dp"
+        app:fab_size="normal"
+        android:layout_margin="30dp"
+        android:src="@drawable/exit"
+        app:fab_colorNormal="#55BBFF"
+    />
 
-</LinearLayout>
+</RelativeLayout>
+

@@ -21,7 +21,7 @@ namespace PwszAlarm.Activities
     {
         private bool dataValid = false;
         EditText emailEditText, passwordEditText;
-        LoggedUser loggedUser = new LoggedUser();
+        readonly LoggedUser loggedUser = new LoggedUser();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -96,11 +96,11 @@ namespace PwszAlarm.Activities
 
         private async void SigninButton_Click(object sender, EventArgs e)
         {
-            
+            SetContentView(Resource.Layout.LoadingView);
             bool loggedIn;
             if (!dataValid )
             {
-                SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
+                SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, dane nie są poprawne.");
                 return;
             }
             else

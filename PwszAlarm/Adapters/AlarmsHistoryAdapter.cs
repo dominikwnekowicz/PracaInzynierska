@@ -50,18 +50,31 @@ namespace PwszAlarm.Activities
 
             if (view == null)
             {
-                view = activity.LayoutInflater.Inflate(Android.Resource.Layout.SimpleListItem2, null);
+                view = activity.LayoutInflater.Inflate(Resource.Layout.alarmsItem_layout, null);
             }
 
             var alarm = alarms[position];
             var rooms = SQLiteDb.GetRooms(activity);
-            TextView text1 = view.FindViewById<TextView>(Android.Resource.Id.Text1);
-            text1.Text = alarm.Name + " - Sala " + rooms.FirstOrDefault(r => r.Id == alarm.RoomId).Name;
+            TextView text1 = view.FindViewById<TextView>(Resource.Id.alarmsItemTextView1);
+            text1.Text = alarm.Name + " - " + rooms.FirstOrDefault(r => r.Id == alarm.RoomId).Name;
             
 
-            TextView text2 = view.FindViewById<TextView>(Android.Resource.Id.Text2);
+            TextView text2 = view.FindViewById<TextView>(Resource.Id.alarmsItemTextView2);
             text2.Text = alarm.NotifyDate.Date.ToShortDateString() + " - " + alarm.NotifyDate.TimeOfDay.ToString();
-            if (!loaded.Loaded)
+            Button button = view.FindViewById<Button>(Resource.Id.alarmsItemButton);
+            button.SetBackgroundColor(Android.Graphics.Color.White);
+            button.SetTextColor(Android.Graphics.Color.DarkRed);
+            button.Click += (o, e) =>
+            {
+                var alarmsHistoryActivity = (AlarmsHistoryActivity)activity;
+                alarmsHistoryActivity.ClickItemButton(alarm);
+            };
+            view.Click += (o, e) =>
+            {
+                var alarmsHistoryActivity = (AlarmsHistoryActivity)activity;
+                alarmsHistoryActivity.ClickItem(alarm);
+            };
+            if (!loaded.Loaded) //powiększało czcionkę cały czas
             {
                 loaded.Text1Size = text1.TextSize;
                 loaded.Text2Size = text2.TextSize;
@@ -74,6 +87,7 @@ namespace PwszAlarm.Activities
                 text1.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text1Size*1.2));
                 text2.SetTextColor(Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.White));
                 text2.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text2Size*1.2));
+                button.Visibility = ViewStates.Visible;
             }
             else
             {
@@ -82,6 +96,7 @@ namespace PwszAlarm.Activities
                 text1.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text1Size));
                 text2.SetTextColor(Android.Content.Res.ColorStateList.ValueOf(Android.Graphics.Color.Black));
                 text2.SetTextSize(Android.Util.ComplexUnitType.Px, (float)(loaded.Text2Size));
+                button.Visibility = ViewStates.Gone;
             }
 
 

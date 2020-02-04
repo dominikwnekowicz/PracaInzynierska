@@ -12,5 +12,8 @@ namespace PwszAlarm.Model
 
         [JsonProperty (PropertyName = "floor")]
         public string Floor { get; set; }
+
+        [JsonProperty (PropertyName = "side")]
+        public string Side { get; set; }
     }
 }

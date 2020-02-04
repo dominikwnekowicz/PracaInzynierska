@@ -15,14 +15,12 @@ using ImageViews.Photo;
 
 namespace PwszAlarm.Adapters
 {
-    public class BuildingPlansAdapter : PagerAdapter
+    public class ImagesScrollViewAdapter : PagerAdapter
     {
+        readonly Context context;
+        readonly List<int> imagesList;
 
-        Context context;
-
-        List<int> imagesList;
-
-        public BuildingPlansAdapter(Context context, List<int> imagesList)
+        public ImagesScrollViewAdapter(Context context, List<int> imagesList)
         {
             this.context = context;
             this.imagesList = imagesList;

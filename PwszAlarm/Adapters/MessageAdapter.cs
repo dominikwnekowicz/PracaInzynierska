@@ -20,14 +20,14 @@ namespace PwszAlarm.Adapters
     class MessageAdapter : BaseAdapter
     {
 
-        private AlarmActivity alarmActivity;
+        private ChatActivity chatActivity;
         private List<Messages> messagesList;
         private string userName;
         private int width;
 
-        public MessageAdapter(AlarmActivity alarmActivity, List<Messages> messagesList, string userName, int width)
+        public MessageAdapter(ChatActivity chatActivity, List<Messages> messagesList, string userName, int width)
         {
-            this.alarmActivity = alarmActivity;
+            this.chatActivity = chatActivity;
             this.messagesList = messagesList;
             this.userName = userName;
             this.width = width;
@@ -46,7 +46,7 @@ namespace PwszAlarm.Adapters
 
         public override View GetView(int position, View convertView, ViewGroup parent)
         {
-            LayoutInflater inflater = (LayoutInflater)alarmActivity.BaseContext.GetSystemService(Context.LayoutInflaterService);
+            LayoutInflater inflater = (LayoutInflater)chatActivity.BaseContext.GetSystemService(Context.LayoutInflaterService);
             View messageView = inflater.Inflate(Resource.Layout.message_layout, null);
 
             TextView userName, messageTime, sentMessageTextView, recivedMessageTextView;

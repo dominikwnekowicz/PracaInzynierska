@@ -14,7 +14,9 @@ using Android.Views;
 using Android.Widget;
 using Plugin.Permissions;
 using Plugin.Permissions.Abstractions;
+using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
+using Refractored.Fab;
 
 namespace PwszAlarm.Activities
 {
@@ -30,6 +32,8 @@ namespace PwszAlarm.Activities
         {
             return Instance;
         }
+        
+
         protected override async void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -37,6 +41,29 @@ namespace PwszAlarm.Activities
             SetContentView(Resource.Layout.MainPage);
             Instance = this;
             var width = Convert.ToInt32(Resources.DisplayMetrics.WidthPixels * 0.96);
+
+            var alarms = await SQLiteDb.GetAlarms(this);
+            Alarm alarm = new Alarm();
+            if (alarms.Count() > 0)
+            {
+                alarm = alarms.Last();
+            }
+            if (alarm != null)
+            {
+                var floatingButton = FindViewById<FloatingActionButton>(Resource.Id.mainPageFloatingActionButton);
+                this.RunOnUiThread(() =>
+                {
+                    if (DateTime.Now.Subtract(alarm.NotifyDate).TotalHours > 24) floatingButton.Visibility = ViewStates.Gone;
+                    else floatingButton.Visibility = ViewStates.Visible;
+                });
+
+                floatingButton.Click += (o, e) =>
+                {
+                    var intent = new Intent(this, typeof(AlarmActivity));
+                    intent.PutExtra("alarmId", alarm.Id);
+                    StartActivity(intent);
+                };
+            }
 
             ISharedPreferences prefs = PreferenceManager.GetDefaultSharedPreferences(this);
             var notificationsAlways = prefs.GetBoolean("settingsNotifications", true);

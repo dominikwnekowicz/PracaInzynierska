@@ -34,9 +34,9 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <AndroidUseSharedRuntime>True</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <AndroidLinkMode>None</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>False</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
     <AotAssemblies>false</AotAssemblies>
     <EnableLLVM>false</EnableLLVM>
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
@@ -51,29 +51,36 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>true</AndroidUseSharedRuntime>
     <AndroidLinkMode>SdkOnly</AndroidLinkMode>
-    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <EmbedAssembliesIntoApk>false</EmbedAssembliesIntoApk>
+    <AotAssemblies>false</AotAssemblies>
+    <EnableLLVM>false</EnableLLVM>
+    <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
+    <BundleAssemblies>false</BundleAssemblies>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Android" />
     <Reference Include="Mono.Android.Export" />
     <Reference Include="System" />
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
-    <Reference Include="Mono.Android" />
     <Reference Include="System.Numerics" />
     <Reference Include="System.Numerics.Vectors" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\AlarmActivity.cs" />
+    <Compile Include="Activities\ChatActivity.cs" />
     <Compile Include="Activities\AlarmsHistoryActivity.cs" />
+    <Compile Include="Activities\EscapeRouteActivity.cs" />
     <Compile Include="Activities\SettingsActivity.cs" />
     <Compile Include="Adapters\AlarmsHistoryAdapter.cs" />
     <Compile Include="Activities\LoadDataActivity.cs" />
     <Compile Include="Activities\MainPageActivity.cs" />
-    <Compile Include="Adapters\BuildingPlansAdapter.cs" />
+    <Compile Include="Adapters\ImagesScrollViewAdapter.cs" />
     <Compile Include="Adapters\MessageAdapter.cs" />
+    <Compile Include="Adapters\RoomsListAdapter.cs" />
     <Compile Include="MainApplication.cs" />
     <Compile Include="Activities\NotificationActivity.cs" />
     <Compile Include="Model\AccountModels.cs" />
@@ -83,6 +90,7 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="Activities\ReportEmergencyActivity.cs" />
+    <Compile Include="Model\EscapeRoute.cs" />
     <Compile Include="UserLocationService.cs" />
     <Compile Include="Model\Messages.cs" />
     <Compile Include="Notifications\FirebaseIIDService.cs" />
@@ -137,6 +145,9 @@
     <PackageReference Include="Plugin.Permissions">
       <Version>3.0.0.12</Version>
     </PackageReference>
+    <PackageReference Include="Refractored.FloatingActionButton">
+      <Version>2.1.0</Version>
+    </PackageReference>
     <PackageReference Include="Refractored.PagerSlidingTabStrip">
       <Version>1.1.6</Version>
     </PackageReference>
@@ -185,6 +196,9 @@
     <PackageReference Include="Xamarin.Android.Support.v7.AppCompat">
       <Version>27.0.2.1</Version>
     </PackageReference>
+    <PackageReference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <Version>27.0.2.1</Version>
+    </PackageReference>
     <PackageReference Include="Xamarin.Firebase.Common">
       <Version>60.1142.1</Version>
     </PackageReference>
@@ -221,7 +235,7 @@
     <AndroidResource Include="Resources\layout\BuildingPlans.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\ReportEmergency.xml" />
+    <AndroidResource Include="Resources\layout\RoomsList.xml" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\WriteReportData.xml" />
@@ -243,7 +257,7 @@
     <AndroidResource Include="Resources\drawable\notification.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\layout\AlarmLayout.xml">
+    <AndroidResource Include="Resources\layout\ChatLayout.xml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -276,42 +290,6 @@
     <AndroidResource Include="Resources\menu\alarms_menu.xml" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\DrugiePietroSchodyPrzod.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\DrugiePietroSchodyTyl.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ParterKorytarz.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ParterSala07.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\PierwszePietroSchodyPrzod.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\PierwszePietroSchodyTyl.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\PierwszePietroSekretariat.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Sala07.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\WyjscieGlowne.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\WyjscieLewe.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\WyjsciePrawe.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\WyjscieTyl.jpg" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\ButtonBorder.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +306,59 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\rightarrow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\DrugiePietroSchodyPrzod.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\DrugiePietroSchodyTyl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\GlowneWyjscie.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ParterWyjscia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\PierwszePietroSchodyPrzod.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\PierwszePietroSchodyTyl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\Sala07.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\WyjscieTyl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\rooms_group.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\room_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\alarmsItem_layout.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\layout\EscapeRoute.xml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\exit.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\icon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it.

@@ -31,9 +31,11 @@ namespace PwszAlarm
                     if(result != null)
                     {
                         var location = result.LastLocation;
-                        Location pwsz = new Location("PWSZ");
-                        pwsz.Latitude = 49.609080;
-                        pwsz.Longitude = 20.704225;
+                        Location pwsz = new Location("PWSZ")
+                        {
+                            Latitude = 49.609080,
+                            Longitude = 20.704225
+                        };
                         float[] results = new float[3];
                         Location.DistanceBetween(location.Latitude, location.Longitude, pwsz.Latitude, pwsz.Longitude, results);
                         var distance = results[0];

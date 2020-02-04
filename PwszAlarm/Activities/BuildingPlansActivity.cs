@@ -28,7 +28,7 @@ namespace PwszAlarm.Activities
 
         }
         List<Image> imagesList;
-        List<int> imagesIdList = new List<int>();
+        readonly List<int> imagesIdList = new List<int>();
         TextView imageTitle;
         ImageButton previousImage, nextImage;
         ViewPager viewPager;
@@ -53,7 +53,7 @@ namespace PwszAlarm.Activities
                 imagesIdList.Add(image.Id);
             }
             viewPager = FindViewById<ViewPager>(Resource.Id.buildingsPlanViewPager);
-            BuildingPlansAdapter adapter = new BuildingPlansAdapter(this, imagesIdList);
+            ImagesScrollViewAdapter adapter = new ImagesScrollViewAdapter(this, imagesIdList);
             viewPager.Adapter = adapter;
             viewPager.PageScrolled += ViewPager_PageScrolled;
 

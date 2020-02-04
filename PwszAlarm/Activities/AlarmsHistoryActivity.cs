@@ -13,6 +13,7 @@ using Android.Views.InputMethods;
 using Android.Widget;
 using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
+using Refractored.Fab;
 
 namespace PwszAlarm.Activities
 {
@@ -63,6 +64,27 @@ namespace PwszAlarm.Activities
 
             await LoadList(false);
 
+            var floatingButton = FindViewById<FloatingActionButton>(Resource.Id.alarmsHistoryFAB);
+
+            floatingButton.Click += (o, e) =>
+            {
+                var intent = new Intent(this, typeof(ReportEmergencyActivity));
+                StartActivity(intent);
+                Finish();
+            };
+
+        }
+        public void ClickItem(Alarm alarm)
+        {
+            var intent = new Intent(this, typeof(ChatActivity));
+            intent.PutExtra("alarmId", alarm.Id);
+            StartActivity(intent);
+        }
+        public void ClickItemButton(Alarm alarm)
+        {
+            var intent = new Intent(this, typeof(AlarmActivity));
+            intent.PutExtra("alarmId", alarm.Id);
+            StartActivity(intent);
         }
         private Task SetAdapter()
         {
@@ -156,7 +178,7 @@ namespace PwszAlarm.Activities
         private void AlarmsListView_ItemClick(object sender, AdapterView.ItemClickEventArgs e)
         {
             var alarm = alarmsList.FirstOrDefault(a => a.Id == alarms.ElementAt(e.Position).Id);
-            var intent = new Intent(this, typeof(AlarmActivity));
+            var intent = new Intent(this, typeof(ChatActivity));
             intent.PutExtra("alarmId", alarm.Id);
             StartActivity(intent);
             Finish();

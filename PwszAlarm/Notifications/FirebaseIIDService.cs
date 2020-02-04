@@ -24,6 +24,7 @@ namespace PwszAlarm.Notifications
         public override void OnTokenRefresh()
         {
             var refreshedToken = FirebaseInstanceId.Instance.Token;
+            WebApiDataController.PostNotifyToken(refreshedToken);
         }
     }
 }

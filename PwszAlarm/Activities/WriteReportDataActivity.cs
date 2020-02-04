@@ -42,7 +42,7 @@ namespace PwszAlarm.Activities
 
             var toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.writeReportDataToolbar);
             SetSupportActionBar(toolbar);
-            SupportActionBar.Title = "Piętro " + choosenFloor + " - Sala" + choosenRoom;
+            SupportActionBar.Title = choosenFloor + " - " + choosenRoom;
 
             okButton.Click += OkButton_Click;
             cancelButton.Click += CancelButton_Click;

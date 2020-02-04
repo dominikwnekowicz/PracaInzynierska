@@ -41,12 +41,14 @@ namespace PwszAlarm.Activities
             SupportActionBar.Title = "Ustawienia";
             Switch gpsSwitch = FindViewById<Switch>(Resource.Id.gpsSwitch);
             gpsSwitch.Checked = prefs.GetBoolean("settingsNotifications", true);
+            ChangeText(gpsSwitch);
 
             Button logout = FindViewById<Button>(Resource.Id.logOutButton);
             gpsSwitch.CheckedChange += (o, e) =>
             {
                 editor.PutBoolean("settingsNotifications", e.IsChecked);
                 editor.Apply();
+                ChangeText(gpsSwitch);
             };
 
             logout.Click += async (o, e) =>
@@ -57,6 +59,11 @@ namespace PwszAlarm.Activities
                 StartActivity(intent);
                 Finish();
             };
+        }
+        private void ChangeText(Switch gpsSwitch)
+        {
+            if (gpsSwitch.Checked) gpsSwitch.Text = "Powiadomienia: Zawsze";
+            else gpsSwitch.Text = "Powiadomienia: W budynku";
         }
 
     }

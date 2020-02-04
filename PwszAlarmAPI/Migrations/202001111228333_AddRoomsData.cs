@@ -7,11 +7,11 @@ namespace PwszAlarmAPI.Migrations
     {
             public override void Up()
             {
-            Sql("DELETE FROM Rooms");
+                Sql("DELETE FROM Rooms");
                 //
                 //Ground Floor
                 //
-            Sql("INSERT INTO Rooms (Name, Floor) VALUES ('0.1', 'Parter')");
+                Sql("INSERT INTO Rooms (Name, Floor) VALUES ('0.1', 'Parter')");
                 Sql("INSERT INTO Rooms (Name, Floor) VALUES ('0.2', 'Parter')");
                 Sql("INSERT INTO Rooms (Name, Floor) VALUES ('0.3', 'Parter')");
                 Sql("INSERT INTO Rooms (Name, Floor) VALUES ('0.4', 'Parter')");

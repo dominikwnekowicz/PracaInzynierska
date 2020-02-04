@@ -46,7 +46,7 @@ namespace PwszAlarm.PwszAlarmDB
                     return false;
                 }
             }
-            catch
+            catch(Exception)
             {
                 return false;
             }
@@ -152,7 +152,7 @@ namespace PwszAlarm.PwszAlarmDB
         }
         public static async Task<IEnumerable<Alarm>> GetAlarms(Activity activity)
         {
-            if (!alarmsList.Any()) await LoadAlarmsToDb(activity);
+            await LoadAlarmsToDb(activity);
             return alarmsList;
         }
         public static void ShowAlert(Activity activity, string title, string message)

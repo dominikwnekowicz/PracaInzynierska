@@ -3,11 +3,6 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
     android:id="@+id/menu_evacuation_route"
-    android:icon="@drawable/route"
-    app:showAsAction="ifRoom"
-    android:title="Evacuation route"/>
-  <item
-    android:id="@+id/menu_overflow"
     app:showAsAction="never"
-    android:title="Overflow"/>
+    android:title="Ewakuacja"/>
 </menu>

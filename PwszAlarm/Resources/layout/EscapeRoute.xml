@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <android.support.v7.widget.Toolbar
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/escapeRouteToolbar"
+        android:minHeight="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+<HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        
+    />
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/escapeRoutesViewPager"
+        android:layout_gravity="center"
+    />
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:textSize="20sp"
+            android:textAlignment="center"
+            android:layout_above="@id/routesControlLinearLayout"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/routeTextView"
+            android:gravity="bottom"
+            android:paddingVertical="10dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:paddingBottom="20dp"
+        android:id="@+id/routesControlLinearLayout"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+    <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="40dp"
+        android:id="@+id/previousStepButton"
+    android:src="@drawable/leftarrow" />
+        <ImageButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:paddingHorizontal="40dp"
+            android:id="@+id/nextStepButton"
+    android:src="@drawable/rightarrow"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:text="W lewo"
+            android:paddingHorizontal="40dp"
+            android:visibility="gone"
+            android:background="#55BBFF"
+            android:id="@+id/goLeftButton"
+    />
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+            android:textColor="@android:color/white"
+            android:text="W prawo"
+            android:paddingHorizontal="40dp"
+            android:visibility="gone"
+            android:id="@+id/goRightButton"
+            android:background="#55BBFF"
+    />
+</LinearLayout>
+</RelativeLayout>
