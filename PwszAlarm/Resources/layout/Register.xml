@@ -59,7 +59,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/registerAccountButton"
         android:layout_marginVertical="5dp"
-        android:background="@android:color/holo_blue_light"
+        android:background="#55BBFF"
         android:textColor="@android:color/white"
         android:textSize="16dp"/>
     <Button
@@ -68,7 +68,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/registerBackButton"
         android:layout_marginVertical="5dp"
-        android:background="@android:color/holo_blue_light"
+        android:background="#55BBFF"
         android:textColor="@android:color/white"
         android:textSize="16dp"/>
 

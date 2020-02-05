@@ -70,11 +70,12 @@ namespace PwszAlarm.Activities
 
             if(notificationsAlways)
             {
+                await UpdateLocationAsync(false);
                 await WebApiDataController.SetSendNotificationsAsync(true);
             }
             else
             {
-                await UpdateLocationAsync();
+                await UpdateLocationAsync(true);
             }
 
             Button planButton = FindViewById<Button>(Resource.Id.planButton);
@@ -106,13 +107,13 @@ namespace PwszAlarm.Activities
             };
         }
 
-        private async System.Threading.Tasks.Task UpdateLocationAsync()
+        private async System.Threading.Tasks.Task UpdateLocationAsync(bool turnOn)
         {
             BuildLocationRequest();
-
             fusedLocationProviderClient = LocationServices.GetFusedLocationProviderClient(this);
             if (await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location) != PermissionStatus.Granted) return;
-            fusedLocationProviderClient.RequestLocationUpdates(locationRequest, GetPendingIntent());
+            if(turnOn) fusedLocationProviderClient.RequestLocationUpdates(locationRequest, GetPendingIntent());
+            else fusedLocationProviderClient.RemoveLocationUpdates(GetPendingIntent());
         }
         private PendingIntent GetPendingIntent()
         {

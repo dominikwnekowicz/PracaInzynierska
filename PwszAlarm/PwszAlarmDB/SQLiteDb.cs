@@ -166,7 +166,6 @@ namespace PwszAlarm.PwszAlarmDB
                 alert.Hide();
             });
             alert.Show();
-            alert.GetButton(1);
         }
         public static async Task LogOut()
         {

@@ -11,6 +11,7 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Plugin.Connectivity;
 using PwszAlarm.Model;
 using PwszAlarm.PwszAlarmDB;
 
@@ -22,7 +23,7 @@ namespace PwszAlarm.Activities
         private bool dataValid = false;
         private Button registerButton, registerBackButton;
         private EditText emailEditText, passwordEditText, confirmEditText, firstNameEditText, lastNameEditText;
-        RegisterUser registerUser = new RegisterUser();
+        readonly RegisterUser registerUser = new RegisterUser();
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
@@ -149,30 +150,52 @@ namespace PwszAlarm.Activities
         private async void RegisterButton_ClickAsync(object sender, EventArgs e)
         {
             TextView errorTextView = FindViewById<TextView>(Resource.Id.errorTextView);
-            if (!dataValid || EmptyField())
+            if (CrossConnectivity.Current.IsConnected)
             {
-                errorTextView.Text = "Wypełnij dane poprawnie...";
-                errorTextView.Visibility = ViewStates.Visible;
-                return;
+                errorTextView.Visibility = ViewStates.Gone;
+                if (!dataValid || EmptyField())
+                {
+                    errorTextView.Text = "Wypełnij dane poprawnie...";
+                    errorTextView.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    registerUser.UserName = registerUser.Email.Split('@').ElementAt(0);
+                    var registerSuceed = await WebApiDataController.RegisterUser(this, registerUser);
+                    if (!registerSuceed)
+                    {
+                        errorTextView.Text = "Konto o podanym adresie już istnieje";
+                        errorTextView.Visibility = ViewStates.Visible;
+                    }
+                    else
+                    {
+                        Toast.MakeText(this, "Zarejestrowano pomyślnie", ToastLength.Short);
+
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                        AlertDialog alert = dialog.Create();
+                        alert.SetTitle("Ważne!");
+                        alert.SetMessage("Aktywuj konto linkiem wysłanym w wiadomości e-mail. Link wygasa za 6 godzin.");
+                        alert.SetButton("OK", (c, ev) =>
+                        {
+                            alert.Hide();
+                            Bundle extras = new Bundle();
+                            extras.PutString("email", emailEditText.Text);
+                            extras.PutBoolean("registered", true);
+                            FinishActivity(1);
+                            Intent intent = new Intent(this, typeof(SignInActivity));
+                            intent.PutExtras(extras);
+                            StartActivity(intent);
+                        });
+                        alert.Show();
+                        errorTextView.Visibility = ViewStates.Gone;
+                    }
+                }
             }
-            registerUser.UserName = registerUser.Email.Split('@').ElementAt(0);
-            var registerSuceed = await WebApiDataController.RegisterUser(this, registerUser);
-            if(!registerSuceed)
+            else
             {
-                errorTextView.Text = "Błąd, spróbuj ponownie...";
+                errorTextView.Text = "Brak połączenia z internetem";
                 errorTextView.Visibility = ViewStates.Visible;
-                return;
             }
-            SQLiteDb.ShowAlert(this, "Ważne!", "Aktywuj konto linkiem wysłanym w wiadomości e-mail. Link wygasa za 6 godzin.");
-            await Task.Delay(3000);
-            errorTextView.Visibility = ViewStates.Gone;
-            Bundle extras = new Bundle();
-            extras.PutString("email", emailEditText.Text);
-            extras.PutBoolean("registered", true);
-            FinishActivity(1);
-            Intent intent = new Intent(this, typeof(SignInActivity));
-            intent.PutExtras(extras);
-            StartActivity(intent);
         }
     }
 }

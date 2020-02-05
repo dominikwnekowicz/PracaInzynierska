@@ -14,6 +14,8 @@ using System;
 using Permission = Plugin.Permissions.Abstractions.Permission;
 using System.Threading.Tasks;
 using PwszAlarm.Model;
+using Plugin.Connectivity;
+using AlertDialog = Android.App.AlertDialog;
 
 namespace PwszAlarm.Activities
 {
@@ -33,55 +35,84 @@ namespace PwszAlarm.Activities
                 PermissionsGranted();
                 if(status == PermissionStatus.Granted)
                 {
-                    user = SQLiteDb.GetUser();
-                    if (user.Email == "failed")
-                    {
-                        var intent = new Intent(this, typeof(SignInActivity));
-                        StartActivityForResult(intent, 1);
-                        Finish();
-                    }
-                    else
-                    {
-                        if (user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
-                        {
-                            //Remember me, Authorization key not actve
-                            var logged = WebApiDataController.LogIn(user).Result;
-                            if(logged)
-                            {
-                                //logged in
-                                var intent = new Intent(this, typeof(LoadDataActivity));
-                                StartActivity(intent);
-                                Finish();
-                            }
-                            else
-                            {
-                                //not logged in
-                                SQLiteDb.ShowAlert(this, "Błąd", "Logowanie nie było możliwe. Spróbuj ponownie później.");
-                                Task.Delay(3000);
-                                var intent = new Intent(this, typeof(LoadDataActivity));
-                                StartActivity(intent);
-                                Finish();
-                            }
-                            
-                        }
-                        else if(!user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
-                        {
-                            //Dont remember me
-                            var intent = new Intent(this, typeof(SignInActivity));
-                            StartActivityForResult(intent, 1);
-                            Finish();
-                        }
-                        else
-                        {   //Authorization key still active
-                            var intent = new Intent(this, typeof(LoadDataActivity));
-                            StartActivity(intent);
-                            Finish();
-                        }
-                    }
+                    TurnOn();
                 }
             }
             while (status != PermissionStatus.Granted);
 
+        }
+        private void TurnOn()
+        {
+            user = SQLiteDb.GetUser();
+            if (user.Email == "failed")
+            {
+                var intent = new Intent(this, typeof(SignInActivity));
+                StartActivityForResult(intent, 1);
+                Finish();
+            }
+            else if (CrossConnectivity.Current.IsConnected)
+            {
+                if (user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
+                {
+                    //Remember me, Authorization key not actve
+                    var logged = WebApiDataController.LogIn(user).Result;
+                    if (logged)
+                    {
+                        //logged in
+                        var intent = new Intent(this, typeof(LoadDataActivity));
+                        StartActivity(intent);
+                        Finish();
+                    }
+                    else
+                    {
+                        //not logged in
+                        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                        AlertDialog alert = dialog.Create();
+                        alert.SetTitle("Błąd");
+                        alert.SetMessage("Logowanie nie było możliwe. Wprowadź dane logowania.");
+                        alert.SetButton("OK", (c, ev) =>
+                        {
+                            alert.Hide();
+                            var intent = new Intent(this, typeof(SignInActivity));
+                            StartActivity(intent);
+                            Finish();
+                        });
+                        alert.Show();
+                    }
+
+                }
+                else if (!user.RememberMe && DateTime.Now.Subtract(user.AuthorizationTime).TotalSeconds >= 86399)
+                {
+                    //Dont remember me
+                    var intent = new Intent(this, typeof(SignInActivity));
+                    StartActivityForResult(intent, 1);
+                    Finish();
+                }
+                else
+                {   //Authorization key still active
+                    var intent = new Intent(this, typeof(LoadDataActivity));
+                    StartActivity(intent);
+                    Finish();
+                }
+            }
+            else
+            {
+                AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+                AlertDialog alert = dialog.Create();
+                alert.SetTitle("Błąd");
+                alert.SetMessage("Brak połączenia z internetem");
+                alert.SetButton("SPRÓBUJ PONOWNIE", (c, ev) =>
+                {
+                    alert.Hide();
+                    TurnOn();
+                });
+                alert.SetButton2("OK", (c, ev) =>
+                {
+                    alert.Hide();
+                    Finish();
+                });
+                alert.Show();
+            }
         }
         private async void PermissionsGranted()
         {

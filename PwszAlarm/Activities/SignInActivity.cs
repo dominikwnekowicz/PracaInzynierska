@@ -27,12 +27,12 @@ namespace PwszAlarm.Activities
             base.OnCreate(savedInstanceState);
 
             // Create your application here
-            SetContentView(Resource.Layout.SignIn);
+            SetContentView(Resource.Layout.signIn_layout);
              var registered = Intent.GetBooleanExtra("registered", false);
-            Button registerButton = FindViewById<Button>(Resource.Id.registerButton);
-            Button signinButton = FindViewById<Button>(Resource.Id.signinButton);
-            emailEditText = FindViewById<EditText>(Resource.Id.emailEditText);
-            passwordEditText = FindViewById<EditText>(Resource.Id.passwordEditText);
+            Button registerButton = FindViewById<Button>(Resource.Id.signInRegisterButton);
+            Button signinButton = FindViewById<Button>(Resource.Id.signInLoginButton);
+            emailEditText = FindViewById<EditText>(Resource.Id.signInEmailEditText);
+            passwordEditText = FindViewById<EditText>(Resource.Id.signInPasswordEditText);
 
             if (registered)
             {
@@ -96,38 +96,47 @@ namespace PwszAlarm.Activities
 
         private async void SigninButton_Click(object sender, EventArgs e)
         {
-            SetContentView(Resource.Layout.LoadingView);
+            TextView errorTextView = FindViewById<TextView>(Resource.Id.signInErrorTextView);
             bool loggedIn;
-            if (!dataValid )
+            if(CrossConnectivity.Current.IsConnected)
             {
-                SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, dane nie są poprawne.");
-                SetContentView(Resource.Layout.SignIn);
-                return;
+                errorTextView.Visibility = ViewStates.Gone;
+                if (!dataValid)
+                {
+                    errorTextView.Text = "Wypełnij dane poprawnie...";
+                    errorTextView.Visibility = ViewStates.Visible;
+                }
+                else
+                {
+                    loggedUser.RememberMe = true;
+                    loggedIn = await WebApiDataController.LogIn(loggedUser);
+                    if (loggedIn)
+                    {
+                        Toast.MakeText(this, "Zalogowano", ToastLength.Short);
+                        SetContentView(Resource.Layout.LoadingView);
+                        var intent = new Intent(this, typeof(NotificationActivity));
+                        StartActivity(intent);
+                        Finish();
+                    }
+                    else
+                    {
+                        errorTextView.Text = "Nie udało się zalogować";
+                        errorTextView.Visibility = ViewStates.Visible;
+                    }
+
+                }
             }
             else
             {
-                loggedUser.RememberMe = true;
-                loggedIn = await WebApiDataController.LogIn(loggedUser);
-                
-            }
-            if(loggedIn)
-            {
-                var intent = new Intent(this, typeof(NotificationActivity));
-                StartActivity(intent);
-                Finish();
-            }
-            else
-            {
-                SQLiteDb.ShowAlert(this, "Błąd", "Nie udało się zalogować, spróbuj ponownie później.");
-                SetContentView(Resource.Layout.SignIn);
-                return;
+                errorTextView.Text = "Brak połączenia z internetem";
+                errorTextView.Visibility = ViewStates.Visible;
             }
         }
 
         private void RegisterButton_Click(object sender, EventArgs e)
         {
 
-            EditText emailEditText = FindViewById<EditText>(Resource.Id.emailEditText);
+            EditText emailEditText = FindViewById<EditText>(Resource.Id.signInEmailEditText);
             var intent = new Intent(this, typeof(RegisterActivity));
 
             intent.PutExtra("email", emailEditText.Text);
