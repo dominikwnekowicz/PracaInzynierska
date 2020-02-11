@@ -65,7 +65,7 @@ namespace PwszAlarmAPI.Controllers.Api
             var room = rooms.FirstOrDefault(r => r.Id == alarmDto.RoomId);
             alarmDto.Id = alarm.Id;
             string title = alarmDto.Name + " - " + room.Name;
-            string body = alarmDto.NotifyDate.ToString();
+            string body = alarmDto.Name + " - " + room.Name + alarmDto.NotifyDate.ToString();
             await ApplicationFirebase.SendData(title, body);
             return Ok();
         }

@@ -58,7 +58,7 @@ namespace PwszAlarmAPI
                 TokenEndpointPath = new PathString("/oauth/token"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
                 Provider = new CustomOAuthProvider(),
-                AccessTokenFormat = new CustomJwtFormat("http://localhost/PwszAlarmAPI")
+                AccessTokenFormat = new CustomJwtFormat("https://pwszalarmwebapi.azurewebsites.net")
             };
 
             // OAuth 2.0 Bearer Access Token Generation
@@ -67,7 +67,7 @@ namespace PwszAlarmAPI
         private void ConfigureOAuthTokenConsumption(IAppBuilder app)
         {
 
-            var issuer = "http://localhost/PwszAlarmAPI";
+            var issuer = "https://pwszalarmwebapi.azurewebsites.net";
             string audienceId = ConfigurationManager.AppSettings["as:AudienceId"];
             byte[] audienceSecret = TextEncodings.Base64Url.Decode(ConfigurationManager.AppSettings["as:AudienceSecret"]);
 

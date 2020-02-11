@@ -55,6 +55,6 @@ namespace PwszAlarmAPI.Models
     }
     public class UserFCMReturnModel
     {
-    public string FirebaseToken { get; set; }
+        public string FirebaseToken { get; set; }
     }
 }
