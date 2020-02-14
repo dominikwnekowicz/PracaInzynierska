@@ -13,7 +13,7 @@ using PwszAlarm.PwszAlarmDB;
 
 namespace PwszAlarm.Activities
 {
-    [Activity(Label = "LoadDataActivity")]
+    [Activity(Label = "PwszAlarm")]
     public class LoadDataActivity : Activity
     {
         protected override async void OnCreate(Bundle savedInstanceState)

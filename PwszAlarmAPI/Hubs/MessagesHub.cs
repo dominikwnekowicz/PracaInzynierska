@@ -22,7 +22,7 @@ namespace PwszAlarmAPI.Hubs
         public void SendMessage(int alarmId, string userName, string message)
         {
             var messageDto = SaveMessage(alarmId, userName, message);
-            Clients.All.sendMessageToClients(messageDto.Id, messageDto.AlarmId, messageDto.UserName, messageDto.Message, messageDto.MessageTime);
+            Clients.All.sendMessageToClients(messageDto.Id, messageDto.AlarmId, messageDto.UserName, messageDto.Message, messageDto.MessageTime.AddHours(-1));
         }
         private MessagesDto SaveMessage(int alarmId, string userName, string message)
         {
@@ -31,7 +31,7 @@ namespace PwszAlarmAPI.Hubs
                 UserName = userName,
                 AlarmId = alarmId,
                 Message = message,
-                MessageTime = DateTime.Now
+                MessageTime = DateTime.Now.AddHours(1)
             };
             var _context = new ApplicationDbContext();
             var messageObj = Mapper.Map<MessagesDto, Messages>(messageDto);
